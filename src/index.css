@@ -1,0 +1,56 @@
+/* Global Reset and Basic Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  color: var(--text-color-primary);
+  background-color: var(--background-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme Variables (Light Mode Default) */
+:root {
+  --background-color: #f8f9fa;
+  --glass-background-color: rgba(255, 255, 255, 0.6);
+  --text-color-primary: #212529;
+  --text-color-secondary: #6c757d;
+  --border-color: rgba(255, 255, 255, 0.8);
+  --accent-color: #007bff;
+  --icon-button-background: rgba(0, 0, 0, 0.05);
+  --icon-button-hover-background: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode */
+body.dark-theme {
+  --background-color: #121212;
+  --glass-background-color: rgba(40, 40, 40, 0.7);
+  --text-color-primary: #e9ecef;
+  --text-color-secondary: #adb5bd;
+  --border-color: rgba(60, 60, 60, 0.8);
+  --icon-button-background: rgba(255, 255, 255, 0.1);
+  --icon-button-hover-background: rgba(255, 255, 255, 0.2);
+}
+
+/* Glassmorphism Style */
+.glass-card {
+  background-color: var(--glass-background-color);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+/* Font Import (Inter) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
