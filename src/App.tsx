@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { db, NoteType, Note, Relation } from './db'; // Dexie.jsデータベースインスタンス
-import { findConnectionsCloud } from './firebase'; // Import findConnectionsCloud
+import { findConnectionsCloud, embedNote, callAceFlow } from './firebase'; // Import callAceFlow
+import { v4 as uuidv4 } from 'uuid'; // Import uuidv4 for thread_id
 
 // 仮のコンポーネント (後で実装)
 const AppHeader = React.lazy(() => import('./components/AppHeader'));
@@ -40,6 +39,19 @@ function App() {
   });
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isAiWorking, setIsAiWorking] = useState(false); // New state for AI working status
+  const [aceResponse, setAceResponse] = useState(''); // New state for ACE response
+  const [aceThreadId, setAceThreadId] = useState<string>(() => {
+    // ローカルストレージからスレッドIDを読み込むか、新規生成
+    const savedThreadId = localStorage.getItem('aceThreadId');
+    return savedThreadId || uuidv4();
+  });
+  const [showNoteModal, setShowNoteModal] = useState(false); // New state for modal visibility
+  const [selectedNoteForModal, setSelectedNoteForModal] = useState<Note | null>(null); // New state for note to display in modal
+
+  // ACEスレッドIDをローカルストレージに保存
+  useEffect(() => {
+    localStorage.setItem('aceThreadId', aceThreadId);
+  }, [aceThreadId]);
 
   // バックグラウンドEmbeddingワーカー
   useEffect(() => {
@@ -243,6 +255,23 @@ function App() {
     }
   }, [getInsightSuggestions]); // getInsightSuggestionsを依存配列に追加
 
+  // ACEエージェントを呼び出す関数
+  const handleCallAceFlow = useCallback(async (query: string) => {
+    setIsAiWorking(true); // ACEもAI処理なのでフラグを共有
+    setAceResponse(''); // 以前の応答をクリア
+    try {
+      const result = await callAceFlow(aceThreadId, query);
+      setAceResponse(result.response);
+      console.log('ACE Flow Result:', result);
+    } catch (error) {
+      console.error('Failed to call ACE Flow:', error);
+      setAceResponse('Error: Could not get response from ACE Agent.');
+    }
+    finally {
+      setIsAiWorking(false);
+    }
+  }, [aceThreadId]);
+
   // 現在のビューに基づいてメインコンテンツをレンダリング
   const renderMainContent = () => {
     switch (view) {
@@ -254,7 +283,14 @@ function App() {
         return <ArchivePage />;
       case 'main':
       default:
-        return <MainPage onAddNote={handleAddNote} />;
+        return (
+          <MainPage
+            onAddNote={handleAddNote}
+            onCallAceFlow={handleCallAceFlow}
+            aceResponse={aceResponse}
+            isAceWorking={isAiWorking}
+          />
+        );
     }
   };
 

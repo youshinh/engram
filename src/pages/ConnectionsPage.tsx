@@ -51,6 +51,17 @@ const ConnectionsPage: React.FC = () => {
     }
   }, []);
 
+  const handleUserCorrectedReasoning = useCallback(async (id: string, reasoning: string) => {
+    try {
+      await db.relations.update(id, { userCorrectedReasoning: reasoning });
+      setRelations(prevRelations =>
+        prevRelations.map(rel => (rel.id === id ? { ...rel, userCorrectedReasoning: reasoning } : rel))
+      );
+    } catch (error) {
+      console.error("Failed to update user corrected reasoning:", error);
+    }
+  }, []);
+
   if (loading) {
     return <div className="connections-page">Loading connections...</div>;
   }
@@ -65,6 +76,7 @@ const ConnectionsPage: React.FC = () => {
             key={relation.id}
             relation={relation}
             onFeedback={handleFeedback}
+            onUserCorrectedReasoning={handleUserCorrectedReasoning}
             sourceNoteContent={notesMap.get(relation.sourceNoteId)?.content as string || '[Note not found]'}
             targetNoteContent={notesMap.get(relation.targetNoteId)?.content as string || '[Note not found]'}
           />

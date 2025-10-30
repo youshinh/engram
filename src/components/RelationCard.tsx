@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'; // Import useState
 import { Relation } from '../db';
 import '../index.css'; // glass-card スタイルのためにインポート
 
@@ -6,7 +6,6 @@ interface RelationCardProps {
   relation: Relation;
   onFeedback?: (id: string, feedback: 'useful' | 'harmful') => void;
   onUserCorrectedReasoning?: (id: string, reasoning: string) => void;
-  // 将来的にsourceNoteとtargetNoteのコンテンツを表示するために、Noteオブジェクトを渡すことも検討
   sourceNoteContent?: string;
   targetNoteContent?: string;
 }
@@ -19,6 +18,15 @@ const RelationCard: React.FC<RelationCardProps> = ({
   targetNoteContent,
 }) => {
   const formattedDate = relation.createdAt.toLocaleString();
+  const [isEditingReasoning, setIsEditingReasoning] = useState(false);
+  const [editedReasoning, setEditedReasoning] = useState(relation.userCorrectedReasoning || '');
+
+  const handleSaveReasoning = () => {
+    if (onUserCorrectedReasoning && editedReasoning.trim()) {
+      onUserCorrectedReasoning(relation.id, editedReasoning.trim());
+      setIsEditingReasoning(false);
+    }
+  };
 
   return (
     <div className="relation-card glass-card">
@@ -30,8 +38,26 @@ const RelationCard: React.FC<RelationCardProps> = ({
         <p><strong>From:</strong> {sourceNoteContent || relation.sourceNoteId}</p>
         <p><strong>To:</strong> {targetNoteContent || relation.targetNoteId}</p>
         <p><strong>Reasoning:</strong> {relation.reasoning}</p>
-        {relation.userCorrectedReasoning && (
+        {relation.userCorrectedReasoning && !isEditingReasoning && (
           <p><strong>User Correction:</strong> {relation.userCorrectedReasoning}</p>
+        )}
+        {isEditingReasoning ? (
+          <div className="edit-reasoning-area">
+            <textarea
+              value={editedReasoning}
+              onChange={(e) => setEditedReasoning(e.target.value)}
+              rows={3}
+              placeholder="Enter your corrected reasoning..."
+              className="ace-textarea" // Reusing style
+            />
+            <button onClick={handleSaveReasoning} className="submit-button small">Save</button>
+            <button onClick={() => setIsEditingReasoning(false)} className="icon-button small">Cancel</button>
+          </div>
+        ) : (
+          <button onClick={() => setIsEditingReasoning(true)} className="icon-button small">
+            <span className="material-symbols-outlined">edit</span>
+            Correct Reasoning
+          </button>
         )}
       </div>
       <div className="relation-card-footer">
@@ -53,7 +79,6 @@ const RelationCard: React.FC<RelationCardProps> = ({
               </button>
             </>
           )}
-          {/* onUserCorrectedReasoning の実装は後で */}
         </div>
       </div>
     </div>
