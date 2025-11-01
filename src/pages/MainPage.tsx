@@ -5,13 +5,21 @@ import { NoteType } from '../db';
 
 interface MainPageProps {
   onAddNote: (content: string, type?: NoteType) => void;
-  onCallAceFlow: (query: string) => Promise<void>; // ACE呼び出し関数
-  aceResponse: string; // ACE応答
-  isAceWorking: boolean; // ACE動作中フラグ
-  onAceResponseClick: () => void; // ACE応答クリック時のハンドラ
+  onCallAceFlow: (query: string) => Promise<void>;
+  aceResponse: string;
+  isAceWorking: boolean;
+  isInsightWorking: boolean; // Add this
+  onAceResponseClick: () => void;
 }
 
-const MainPage: React.FC<MainPageProps> = ({ onAddNote, onCallAceFlow, aceResponse, isAceWorking, onAceResponseClick }) => {
+const MainPage: React.FC<MainPageProps> = ({ 
+  onAddNote, 
+  onCallAceFlow, 
+  aceResponse, 
+  isAceWorking, 
+  isInsightWorking, // Add this
+  onAceResponseClick 
+}) => {
   const [aceQuery, setAceQuery] = useState('');
 
   const handleAceSubmit = (e: React.FormEvent) => {
@@ -30,6 +38,9 @@ const MainPage: React.FC<MainPageProps> = ({ onAddNote, onCallAceFlow, aceRespon
       <p>Your intellectual creativity partner.</p>
       <NoteInput onAddNote={onAddNote} />
 
+      {/* Display insight animation when processing new note */}
+      {isInsightWorking && <InsightBloomAnimation isAnimating={true} />}
+
       <div className="ace-section glass-card">
         <h3>ACE Agent</h3>
         <form onSubmit={handleAceSubmit} className="ace-input-form">
@@ -39,7 +50,7 @@ const MainPage: React.FC<MainPageProps> = ({ onAddNote, onCallAceFlow, aceRespon
             placeholder="Ask ACE a question or deepen your thoughts..."
             rows={3}
             className="ace-textarea"
-            disabled={isAceWorking} // ACE動作中は無効化
+            disabled={isAceWorking}
           />
           <button type="submit" className="submit-button" disabled={isAceWorking}>
             <span className="material-symbols-outlined">psychology</span>
@@ -56,9 +67,6 @@ const MainPage: React.FC<MainPageProps> = ({ onAddNote, onCallAceFlow, aceRespon
           {!isAceWorking && !aceResponse && <p>ACE response will appear here.</p>}
         </div>
       </div>
-
-      {/* InsightBloomAnimation は ACE の動作状況に応じて表示を制御 */}
-      {/* <InsightBloomAnimation /> */}
     </div>
   );
 };

@@ -32,7 +32,6 @@ declare global {
 function App() {
   const [view, setView] = useState<View>('main');
   const [theme, setTheme] = useState<Theme>(() => {
-    // ローカルストレージからテーマを読み込むか、システムのデフォルトを使用
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light' || savedTheme === 'dark') {
       return savedTheme;
@@ -40,10 +39,10 @@ function App() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isAiWorking, setIsAiWorking] = useState(false); // New state for AI working status
-  const [aceResponse, setAceResponse] = useState(''); // New state for ACE response
+  const [isAceWorking, setIsAceWorking] = useState(false); // ACE Agent working status
+  const [isInsightWorking, setIsInsightWorking] = useState(false); // Insight generation working status
+  const [aceResponse, setAceResponse] = useState('');
   const [aceThreadId, setAceThreadId] = useState<string>(() => {
-    // ローカルストレージからスレッドIDを読み込むか、新規生成
     const savedThreadId = localStorage.getItem('aceThreadId');
     return savedThreadId || uuidv4();
   });
@@ -59,7 +58,6 @@ function App() {
   // バックグラウンドEmbeddingワーカー
   useEffect(() => {
     const processPendingEmbeddings = async () => {
-      // embeddingStatusが'pending'のノートを最大5件取得
       const pendingNotes = await db.notes
         .where('embeddingStatus')
         .equals('pending')
@@ -68,8 +66,7 @@ function App() {
 
       for (const note of pendingNotes) {
         try {
-          // embedNote Cloud Functionを呼び出し
-          const embedding = await embedNote(note.type, note.content as string); // contentはstringを想定
+          const embedding = await embedNote(note.type, note.content as string);
           await db.notes.update(note.id, {
             embedding,
             embeddingStatus: 'completed',
@@ -82,17 +79,16 @@ function App() {
       }
     };
 
-    const intervalId = setInterval(processPendingEmbeddings, 10000); // 10秒ごとに実行
+    const intervalId = setInterval(processPendingEmbeddings, 10000);
 
-    return () => clearInterval(intervalId); // クリーンアップ
-  }, []); // 依存配列は空で、コンポーネントマウント時に一度だけ設定
+    return () => clearInterval(intervalId);
+  }, []);
 
   // バックグラウンドInsightワーカー
   useEffect(() => {
     const processPendingInsights = async () => {
-      if (isAiWorking) return; // AIが既に動作中の場合はスキップ
+      if (isAceWorking || isInsightWorking) return; // 他のAI処理が動作中の場合はスキップ
 
-      // embeddingStatusが'completed'かつinsightStatusが'pending'のノートを最大5件取得
       const pendingNotes = await db.notes
         .where('embeddingStatus')
         .equals('completed')
@@ -102,14 +98,12 @@ function App() {
 
       for (const note of pendingNotes) {
         try {
-          // 関連ノートを取得 (自分自身を除く)
           const allOtherNotes = await db.notes.where('id').notEqual(note.id).toArray();
           const suggestions = await getInsightSuggestions(note, allOtherNotes);
 
-          // 提案された繋がりをデータベースに保存
           if (suggestions.length > 0) {
             const relationsToAdd: Relation[] = suggestions.map(s => ({
-              id: '', // Dexie hook will generate UUID
+              id: '', 
               sourceNoteId: note.id,
               targetNoteId: s.targetNoteId,
               reasoning: s.reasoning,
@@ -127,10 +121,10 @@ function App() {
       }
     };
 
-    const intervalId = setInterval(processPendingInsights, 15000); // 15秒ごとに実行
+    const intervalId = setInterval(processPendingInsights, 15000);
 
-    return () => clearInterval(intervalId); // クリーンアップ
-  }, [isAiWorking]); // isAiWorkingを依存配列に追加
+    return () => clearInterval(intervalId);
+  }, [isAceWorking, isInsightWorking]);
 
   // テーマの適用とローカルストレージへの保存
   useEffect(() => {
@@ -146,7 +140,7 @@ function App() {
   // 画面遷移ハンドラ
   const handleNavigate = useCallback((newView: View) => {
     setView(newView);
-    setIsNavOpen(false); // ナビゲーション後は閉じる
+    setIsNavOpen(false);
   }, []);
 
   // ナビゲーション開閉ハンドラ
@@ -156,9 +150,8 @@ function App() {
 
   // AIによる洞察提案を取得する関数
   const getInsightSuggestions = async (newNote: Note, contextNotes: Note[]): Promise<InsightSuggestion[]> => {
-    setIsAiWorking(true);
+    setIsInsightWorking(true);
     try {
-      // プロンプトの構築
       const textPrompt = `
         You are an AI assistant that helps find connections between notes.
         Given a new note and a list of existing context notes, identify up to 3 strong connections.
@@ -178,7 +171,6 @@ function App() {
 
       let suggestions: InsightSuggestion[] = [];
 
-      // 1. オンデバイスAI (window.ai.LanguageModel) を試行
       if (window.ai && window.ai.LanguageModel) {
         try {
           const model = await window.ai.createTextSession();
@@ -187,7 +179,6 @@ function App() {
           console.log('On-device AI suggestions:', suggestions);
         } catch (onDeviceError) {
           console.warn('On-device AI failed, falling back to cloud:', onDeviceError);
-          // 2. オンデバイスAIが利用できない、または失敗した場合、クラウドフォールバック
           suggestions = await findConnectionsCloud(
             { id: newNote.id, type: newNote.type, content: newNote.content as string },
             contextNotes.map(n => ({ id: n.id, type: n.type, content: n.content as string }))
@@ -196,7 +187,6 @@ function App() {
         }
       } else {
         console.log('On-device AI not available, using cloud fallback.');
-        // 2. オンデバイスAIが利用できない場合、クラウドフォールバック
         suggestions = await findConnectionsCloud(
           { id: newNote.id, type: newNote.type, content: newNote.content as string },
           contextNotes.map(n => ({ id: n.id, type: n.type, content: n.content as string }))
@@ -204,7 +194,6 @@ function App() {
         console.log('Cloud AI suggestions:', suggestions);
       }
 
-      // 結果のバリデーション (簡易的)
       if (!Array.isArray(suggestions) || suggestions.some(s => !s.targetNoteId || !s.reasoning)) {
         throw new Error('Invalid AI suggestion format');
       }
@@ -215,7 +204,7 @@ function App() {
       console.error('Error getting insight suggestions:', error);
       return [];
     } finally {
-      setIsAiWorking(false);
+      setIsInsightWorking(false);
     }
   };
 
@@ -233,16 +222,14 @@ function App() {
       });
       console.log('Note added successfully! ID:', newNoteId);
 
-      // 新しいノートが追加されたら、洞察提案を取得
       const newNote = await db.notes.get(newNoteId);
       if (newNote) {
         const allOtherNotes = await db.notes.where('id').notEqual(newNote.id).toArray();
         const suggestions = await getInsightSuggestions(newNote, allOtherNotes);
 
-        // 提案された繋がりをデータベースに保存
         if (suggestions.length > 0) {
           const relationsToAdd: Relation[] = suggestions.map(s => ({
-            id: '', // Dexie hook will generate UUID
+            id: '', 
             sourceNoteId: newNote.id,
             targetNoteId: s.targetNoteId,
             reasoning: s.reasoning,
@@ -256,12 +243,12 @@ function App() {
     } catch (error) {
       console.error('Failed to add note or get insights:', error);
     }
-  }, [getInsightSuggestions]); // getInsightSuggestionsを依存配列に追加
+  }, [getInsightSuggestions]);
 
   // ACEエージェントを呼び出す関数
   const handleCallAceFlow = useCallback(async (query: string) => {
-    setIsAiWorking(true); // ACEもAI処理なのでフラグを共有
-    setAceResponse(''); // 以前の応答をクリア
+    setIsAceWorking(true);
+    setAceResponse('');
     try {
       const result = await callAceFlow(aceThreadId, query);
       setAceResponse(result.response);
@@ -271,7 +258,7 @@ function App() {
       setAceResponse('Error: Could not get response from ACE Agent.');
     }
     finally {
-      setIsAiWorking(false);
+      setIsAceWorking(false);
     }
   }, [aceThreadId]);
 
@@ -307,7 +294,8 @@ function App() {
             onAddNote={handleAddNote}
             onCallAceFlow={handleCallAceFlow}
             aceResponse={aceResponse}
-            isAceWorking={isAiWorking}
+            isAceWorking={isAceWorking}
+            isInsightWorking={isInsightWorking}
             onAceResponseClick={handleAceResponseClick}
           />
         );

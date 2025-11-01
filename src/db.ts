@@ -176,6 +176,14 @@ export class EngramDB extends Dexie {
   async deleteRelation(id: string): Promise<void> {
     await this.relations.delete(id);
   }
+
+  /**
+   * 指定されたIDのノートをアーカイブする
+   * @param id アーカイブするノートのID
+   */
+  async archiveNote(id: string): Promise<void> {
+    await this.notes.update(id, { status: 'archived' });
+  }
 }
 
 export const db = new EngramDB();
