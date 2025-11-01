@@ -17,9 +17,20 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.app-container {
+  min-height: 100vh;
+  background-color: #f4f4f9;
+  background-image: linear-gradient(to bottom right, #eef2f3, #8e9eab);
+}
+
+body.dark-theme .app-container {
+  background-color: #1a1a1a;
+  background-image: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+}
+
 /* Theme Variables (Light Mode Default) */
 :root {
-  --background-color: #f8f9fa;
+  --background-color: #f4f4f9;
   --glass-background-color: rgba(255, 255, 255, 0.6);
   --text-color-primary: #212529;
   --text-color-secondary: #6c757d;
@@ -31,7 +42,7 @@ body {
 
 /* Dark Mode */
 body.dark-theme {
-  --background-color: #121212;
+  --background-color: #1a1a1a;
   --glass-background-color: rgba(40, 40, 40, 0.7);
   --text-color-primary: #e9ecef;
   --text-color-secondary: #adb5bd;
@@ -65,7 +76,6 @@ body.dark-theme {
 body.dark-theme .clickable:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
-
 
 /* Modal Styles */
 .modal-backdrop {
@@ -116,6 +126,137 @@ body.dark-theme .modal-content pre {
     /* Add more specific button styles if needed */
 }
 
+/* Styles from SideNav.css */
+.side-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 半透明のオーバーレイ */
+  z-index: 999; /* 他の要素より手前に表示 */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
 
-/* Font Import (Inter) */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+.side-nav-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.side-nav {
+  position: fixed;
+  top: 0;
+  left: -300px; /* 閉じた状態 */
+  width: 280px;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.3s ease;
+  z-index: 1000; /* オーバーレイより手前 */
+}
+
+.side-nav.open {
+  left: 0; /* 開いた状態 */
+}
+
+.side-nav .close-button {
+  align-self: flex-end;
+  margin-bottom: 20px;
+}
+
+.side-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-nav li {
+  margin-bottom: 10px;
+}
+
+.side-nav .nav-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  background-color: transparent;
+  color: var(--text-color-primary);
+  font-size: 1.1em;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.side-nav .nav-item:hover {
+  background-color: var(--icon-button-hover-background);
+}
+
+.side-nav .nav-item.active {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.side-nav .nav-item.active .material-symbols-outlined {
+  color: white;
+}
+
+.side-nav .nav-item span.material-symbols-outlined {
+  margin-right: 10px;
+  font-size: 1.4em;
+  color: var(--text-color-secondary);
+}
+
+/* AppHeader styles */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-radius: 0; /* ヘッダーは角丸にしない */
+  margin-bottom: 0; /* ヘッダーの下マージンは不要 */
+  border-left: none;
+  border-right: none;
+  border-top: none;
+}
+
+.app-header .app-title {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: var(--text-color-primary);
+}
+
+.icon-button {
+  background-color: var(--icon-button-background);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.icon-button:hover {
+  background-color: var(--icon-button-hover-background);
+}
+
+.icon-button .material-symbols-outlined {
+  font-size: 24px;
+  color: var(--text-color-primary);
+}
+
+/* Main Content Area */
+.main-content {
+  padding: 20px;
+  margin-left: 0; /* サイドナビが閉じてる時 */
+  transition: margin-left 0.3s ease;
+}

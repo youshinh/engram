@@ -1,7 +1,6 @@
 import React from 'react';
 import { View } from '../App';
 import '../index.css'; // glass-card スタイルのためにインポート
-import './SideNav.css'; // SideNav 専用のスタイル
 
 interface SideNavProps {
   isOpen: boolean;
