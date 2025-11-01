@@ -8,9 +8,10 @@ interface MainPageProps {
   onCallAceFlow: (query: string) => Promise<void>; // ACE呼び出し関数
   aceResponse: string; // ACE応答
   isAceWorking: boolean; // ACE動作中フラグ
+  onAceResponseClick: () => void; // ACE応答クリック時のハンドラ
 }
 
-const MainPage: React.FC<MainPageProps> = ({ onAddNote, onCallAceFlow, aceResponse, isAceWorking }) => {
+const MainPage: React.FC<MainPageProps> = ({ onAddNote, onCallAceFlow, aceResponse, isAceWorking, onAceResponseClick }) => {
   const [aceQuery, setAceQuery] = useState('');
 
   const handleAceSubmit = (e: React.FormEvent) => {
@@ -20,6 +21,8 @@ const MainPage: React.FC<MainPageProps> = ({ onAddNote, onCallAceFlow, aceRespon
       setAceQuery('');
     }
   };
+
+  const hasRef = aceResponse.includes('Ref:');
 
   return (
     <div className="main-page">
@@ -44,8 +47,12 @@ const MainPage: React.FC<MainPageProps> = ({ onAddNote, onCallAceFlow, aceRespon
           </button>
         </form>
         <div className="ace-response-area">
-          {isAceWorking && <InsightBloomAnimation isAnimating={true} />} 
-          {aceResponse && <p>{aceResponse}</p>}
+          {isAceWorking && <InsightBloomAnimation isAnimating={true} />}
+          {aceResponse && (
+            <div onClick={onAceResponseClick} className={hasRef ? 'clickable' : ''}>
+              <p>{aceResponse}</p>
+            </div>
+          )}
           {!isAceWorking && !aceResponse && <p>ACE response will appear here.</p>}
         </div>
       </div>

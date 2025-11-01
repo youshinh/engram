@@ -1,4 +1,6 @@
-import { findConnectionsCloud, embedNote, callAceFlow } from './firebase'; // Import callAceFlow
+import React, { useCallback, useEffect, useState } from 'react';
+import { db, NoteType, Note, Relation } from './db';
+import { findConnectionsCloud, embedNote, callAceFlow, getPlaybookNote } from './firebase'; // Import callAceFlow
 import { v4 as uuidv4 } from 'uuid'; // Import uuidv4 for thread_id
 
 // 仮のコンポーネント (後で実装)
@@ -45,8 +47,9 @@ function App() {
     const savedThreadId = localStorage.getItem('aceThreadId');
     return savedThreadId || uuidv4();
   });
-  const [showNoteModal, setShowNoteModal] = useState(false); // New state for modal visibility
-  const [selectedNoteForModal, setSelectedNoteForModal] = useState<Note | null>(null); // New state for note to display in modal
+  const [showNoteModal, setShowNoteModal] = useState(false);
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null);
+
 
   // ACEスレッドIDをローカルストレージに保存
   useEffect(() => {
@@ -127,7 +130,7 @@ function App() {
     const intervalId = setInterval(processPendingInsights, 15000); // 15秒ごとに実行
 
     return () => clearInterval(intervalId); // クリーンアップ
-  }, [isAiWorking, getInsightSuggestions]); // isAiWorkingとgetInsightSuggestionsを依存配列に追加
+  }, [isAiWorking]); // isAiWorkingを依存配列に追加
 
   // テーマの適用とローカルストレージへの保存
   useEffect(() => {
@@ -152,7 +155,7 @@ function App() {
   }, []);
 
   // AIによる洞察提案を取得する関数
-  const getInsightSuggestions = useCallback(async (newNote: Note, contextNotes: Note[]): Promise<InsightSuggestion[]> => {
+  const getInsightSuggestions = async (newNote: Note, contextNotes: Note[]): Promise<InsightSuggestion[]> => {
     setIsAiWorking(true);
     try {
       // プロンプトの構築
@@ -214,7 +217,7 @@ function App() {
     } finally {
       setIsAiWorking(false);
     }
-  }, []);
+  };
 
   // ノート追加ハンドラ
   const handleAddNote = useCallback(async (content: string, type: NoteType = 'text') => {
@@ -236,7 +239,7 @@ function App() {
         const allOtherNotes = await db.notes.where('id').notEqual(newNote.id).toArray();
         const suggestions = await getInsightSuggestions(newNote, allOtherNotes);
 
-        // 提案された繋がりをデータベースに保存 (Task 2.3で実装)
+        // 提案された繋がりをデータベースに保存
         if (suggestions.length > 0) {
           const relationsToAdd: Relation[] = suggestions.map(s => ({
             id: '', // Dexie hook will generate UUID
@@ -272,6 +275,22 @@ function App() {
     }
   }, [aceThreadId]);
 
+  // ACEの応答をクリックしたときの処理
+  const handleAceResponseClick = useCallback(async () => {
+    const match = aceResponse.match(/Ref: ([a-zA-Z0-9-]+)/);
+    if (match && match[1]) {
+      const noteId = match[1];
+      const note = await db.notes.get(noteId);
+      if (note) {
+        setSelectedNote(note);
+        setShowNoteModal(true);
+      } else {
+        console.warn(`Note with ID ${noteId} not found.`);
+      }
+    }
+  }, [aceResponse]);
+
+
   // 現在のビューに基づいてメインコンテンツをレンダリング
   const renderMainContent = () => {
     switch (view) {
@@ -289,6 +308,7 @@ function App() {
             onCallAceFlow={handleCallAceFlow}
             aceResponse={aceResponse}
             isAceWorking={isAiWorking}
+            onAceResponseClick={handleAceResponseClick}
           />
         );
     }
@@ -312,6 +332,21 @@ function App() {
           {renderMainContent()}
         </main>
       </React.Suspense>
+
+      {showNoteModal && selectedNote && (
+        <div className="modal-backdrop" onClick={() => setShowNoteModal(false)}>
+          <div 
+            className="modal-content" 
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
+            <h3>Note Detail</h3>
+            <pre>{selectedNote.content}</pre>
+            <button onClick={() => setShowNoteModal(false)} className="close-button">Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

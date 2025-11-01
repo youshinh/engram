@@ -77,8 +77,8 @@ const ConnectionsPage: React.FC = () => {
             relation={relation}
             onFeedback={handleFeedback}
             onUserCorrectedReasoning={handleUserCorrectedReasoning}
-            sourceNoteContent={notesMap.get(relation.sourceNoteId)?.content as string || '[Note not found]'}
-            targetNoteContent={notesMap.get(relation.targetNoteId)?.content as string || '[Note not found]'}
+            sourceNoteContent={notesMap.get(relation.sourceNoteId)?.content || '[Note not found]'}
+            targetNoteContent={notesMap.get(relation.targetNoteId)?.content || '[Note not found]'}
           />
         ))}
       </div>

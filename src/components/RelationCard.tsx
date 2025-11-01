@@ -19,7 +19,7 @@ const RelationCard: React.FC<RelationCardProps> = ({
 }) => {
   const formattedDate = relation.createdAt.toLocaleString();
   const [isEditingReasoning, setIsEditingReasoning] = useState(false);
-  const [editedReasoning, setEditedReasoning] = useState(relation.userCorrectedReasoning || '');
+  const [editedReasoning, setEditedReasoning] = useState(relation.userCorrectedReasoning || relation.reasoning || '');
 
   const handleSaveReasoning = () => {
     if (onUserCorrectedReasoning && editedReasoning.trim()) {
