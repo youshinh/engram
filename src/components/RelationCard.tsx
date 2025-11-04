@@ -35,34 +35,36 @@ const RelationCard: React.FC<RelationCardProps> = ({
         <h3>Connection Insight</h3>
       </div>
       <div className="relation-card-content">
-        <p><strong>From:</strong> {sourceNoteContent || relation.sourceNoteId}</p>
-        <p><strong>To:</strong> {targetNoteContent || relation.targetNoteId}</p>
-        <p><strong>Reasoning:</strong> {relation.reasoning}</p>
+        <p className="relation-section"><strong>From:</strong> {sourceNoteContent || relation.sourceId}</p>
+        <p className="relation-section"><strong>To:</strong> {targetNoteContent || relation.targetId}</p>
+        <p className="relation-section"><strong>Reasoning:</strong> {relation.reasoning}</p>
         {relation.userCorrectedReasoning && !isEditingReasoning && (
-          <p><strong>User Correction:</strong> {relation.userCorrectedReasoning}</p>
+          <p className="user-correction relation-section"><strong>Your Correction:</strong> {relation.userCorrectedReasoning}</p>
         )}
-        {isEditingReasoning ? (
+        {isEditingReasoning && (
           <div className="edit-reasoning-area">
             <textarea
               value={editedReasoning}
               onChange={(e) => setEditedReasoning(e.target.value)}
               rows={3}
               placeholder="Enter your corrected reasoning..."
-              className="ace-textarea" // Reusing style
+              className="ace-textarea"
             />
-            <button onClick={handleSaveReasoning} className="submit-button small">Save</button>
-            <button onClick={() => setIsEditingReasoning(false)} className="icon-button small">Cancel</button>
+            <div className="edit-actions">
+              <button onClick={() => setIsEditingReasoning(false)} className="icon-button small">Cancel</button>
+              <button onClick={handleSaveReasoning} className="button primary small">Save</button>
+            </div>
           </div>
-        ) : (
-          <button onClick={() => setIsEditingReasoning(true)} className="icon-button small">
-            <span className="material-symbols-outlined">edit</span>
-            Correct Reasoning
-          </button>
         )}
       </div>
       <div className="relation-card-footer">
         <span className="relation-date">{formattedDate}</span>
-        <div className="relation-feedback">
+        <div className="relation-actions">
+          {!isEditingReasoning && (
+            <button onClick={() => setIsEditingReasoning(true)} className="icon-button small edit-reasoning-button">
+              <span className="material-symbols-outlined">edit</span>
+            </button>
+          )}
           {onFeedback && (
             <>
               <button
