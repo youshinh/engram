@@ -16,7 +16,7 @@ const ConnectionsPage: React.FC = () => {
     setLoading(true);
     try {
       const allRelations = await db.relations.orderBy('createdAt').reverse().toArray();
-      setRelations(allRelations);
+      // setRelations(allRelations); // Moved and filtered below
 
       const noteIds = new Set<string>();
       allRelations.forEach(rel => {
@@ -30,6 +30,12 @@ const ConnectionsPage: React.FC = () => {
         if (note) newNotesMap.set(note.id, note);
       });
       setNotesMap(newNotesMap);
+
+      // Filter relations to only include those where both source and target notes exist
+      const filteredRelations = allRelations.filter(rel =>
+        newNotesMap.has(rel.sourceId) && newNotesMap.has(rel.targetId)
+      );
+      setRelations(filteredRelations);
 
     } catch (error) {
       console.error("Failed to load relations or notes:", error);

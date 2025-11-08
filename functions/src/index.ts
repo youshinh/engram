@@ -14,7 +14,7 @@ const geminiApiKey = defineString("GEMINI_API_KEY");
 let genAI: GoogleGenerativeAI;
 
 // Placeholder for findConnectionsCloud
-export const findConnectionsCloud = onCall(async (request) => {
+export const findConnectionsCloud = onCall({ cors: true }, async (request) => {
   logger.info("findConnectionsCloud called with data:", request.data);
 
   if (!genAI) {
@@ -71,7 +71,7 @@ export const findConnectionsCloud = onCall(async (request) => {
 });
 
 // Placeholder for embedNote
-export const embedNote = onCall(async (request) => {
+export const embedNote = onCall({ cors: true }, async (request) => {
   logger.info("embedNote called with data:", request.data);
 
   if (!genAI) {
@@ -124,7 +124,7 @@ export const embedNote = onCall(async (request) => {
 });
 
 // Placeholder for engrammerFlow_start
-export const engrammerFlow_start = onCall(async (request) => {
+export const engrammerFlow_start = onCall({ cors: true }, async (request) => {
   logger.info("engrammerFlow_start called with data:", request.data);
   if (!request.data.query) {
     throw new HttpsError("invalid-argument", "The function must be called with \"query\".");
@@ -136,7 +136,7 @@ export const engrammerFlow_start = onCall(async (request) => {
 });
 
 // Placeholder for getEngrammerState
-export const getEngrammerState = onCall(async (request) => {
+export const getEngrammerState = onCall({ cors: true }, async (request) => {
   logger.info("getEngrammerState called with data:", request.data);
   if (!request.data.threadId) {
     throw new HttpsError("invalid-argument", "The function must be called with \"thread_id\".");
@@ -153,7 +153,7 @@ export const getEngrammerState = onCall(async (request) => {
 });
 
 // Placeholder for engrammerFlow_continue
-export const engrammerFlow_continue = onCall(async (request) => {
+export const engrammerFlow_continue = onCall({ cors: true }, async (request) => {
   logger.info("engrammerFlow_continue called with data:", request.data);
   if (!request.data.threadId || !request.data.userInput) {
     throw new HttpsError("invalid-argument", "The function must be called with \"thread_id\" and \"userInput\".");
@@ -163,7 +163,7 @@ export const engrammerFlow_continue = onCall(async (request) => {
 });
 
 // Placeholder for engrammerFlow_getNote
-export const engrammerFlow_getNote = onCall(async (request) => {
+export const engrammerFlow_getNote = onCall({ cors: true }, async (request) => {
   logger.info("engrammerFlow_getNote called with data:", request.data);
   if (!request.data.source || !request.data.noteId) {
     throw new HttpsError("invalid-argument", "The function must be called with \"source\" and \"noteId\".");
