@@ -11,7 +11,7 @@ import { defineString } from "firebase-functions/params";
 
 // LangGraph Imports
 import { StateGraph, START, END } from "@langchain/langgraph";
-// import { FirestoreCheckpointer } from "@langchain/langgraph-checkpoint/firestore"; // Removed
+import { FirestoreSaver } from "@cassina/langgraphjs-checkpoint-firestore";
 import { BaseMessage, HumanMessage, AIMessage } from "@langchain/core/messages";
 
 // Define Gemini API Key from environment
@@ -99,95 +99,10 @@ interface EngrammerAgentState {
 
 // --- 3. LangGraph 1.0 のセットアップ (概念) ---
 
-interface CheckpointTuple {
-  config: any;
-  checkpoint: any;
-  parent_config?: any;
-}
 
-// Mock FirestoreCheckpointer for now due to dependency conflicts
-class MockFirestoreCheckpointer {
-  private store: Map<string, any> = new Map();
-
-  // Required by BaseCheckpointSaver
-  public serde: any = {
-    // Mock a simple serializer/deserializer
-    // In a real implementation, this would handle serialization of Checkpoint objects
-    dump: (obj: any) => JSON.stringify(obj),
-    load: (s: string) => JSON.parse(s),
-  };
-
-  // Required by BaseCheckpointSaver
-  public config_specs: any[] = [
-    // Mock config specs, typically for thread_id and thread_ts
-    { id: "thread_id", type: "string" },
-    { id: "thread_ts", type: "string" },
-  ];
-
-  constructor(options: { db: any; collectionName: string }) {
-    // Mock constructor, no actual Firestore interaction
-  }
-
-  async get(config: { configurable: { threadId: string } }): Promise<any> {
-    const threadId = config.configurable.threadId;
-    return this.store.get(threadId);
-  }
-
-  async put(config: { configurable: { threadId: string } }, value: any): Promise<any> {
-    const threadId = config.configurable.threadId;
-    this.store.set(threadId, value);
-    return config; // Return the config as a dummy RunnableConfig
-  }
-
-  // Placeholder for other required methods
-  async getTuple(config: { configurable: { threadId: string } }): Promise<CheckpointTuple | undefined> {
-    return undefined;
-  }
-
-  async *list(config: { configurable: { threadId: string } }): AsyncGenerator<CheckpointTuple> {
-    // Yield nothing for mock
-  }
-
-  async putWrites(config: { configurable: { threadId: string } }, writes: any): Promise<void> {
-    // No-op for mock
-  }
-
-  async deleteThread(threadId: string): Promise<void> {
-    this.store.delete(threadId);
-  }
-
-  getNextVersion(current: number | undefined): number {
-    return (current || 0) + 1;
-  }
-
-  // Asynchronous counterparts (for simplicity, just call sync versions)
-  async aget(config: { configurable: { threadId: string } }): Promise<any> {
-    return this.get(config);
-  }
-
-  async agetTuple(config: { configurable: { threadId: string } }): Promise<CheckpointTuple | undefined> {
-    return this.getTuple(config);
-  }
-
-  async *alist(config: { configurable: { threadId: string } }): AsyncGenerator<CheckpointTuple> {
-    yield* this.list(config);
-  }
-
-  async aput(config: { configurable: { threadId: string } }, value: any): Promise<any> {
-    return this.put(config, value);
-  }
-
-  async aputWrites(config: { configurable: { threadId: string } }, writes: any): Promise<void> {
-    return this.putWrites(config, writes);
-  }
-
-  async adeleteThread(threadId: string): Promise<void> {
-    return this.deleteThread(threadId);
-  }
-}
-const firestoreCheckpointer = new MockFirestoreCheckpointer({
-  db: db, // Still pass the mock db for consistency, though not used by MockFirestoreCheckpointer
-  collectionName: "engrammer_checkpoints",
+const firestoreCheckpointer = new FirestoreSaver({
+  firestore: db,
+  checkpointCollectionName: "engrammer_checkpoints",
 });
 
 // 3.2. 専門エージェント (Supervisorの子ノード) (改善案#4)
@@ -301,6 +216,7 @@ const engrammerGraphBuilder = new StateGraph<EngrammerAgentState>({
 // 3.8. ミドルウェア (改善案#3) - Not implemented yet
 
 // 3.9. グラフのコンパイル
+// @ts-ignore
 export const compiledEngrammer = engrammerGraphBuilder.compile({ checkpointer: firestoreCheckpointer });
 
 // Placeholder for findConnectionsCloud
