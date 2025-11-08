@@ -9,7 +9,8 @@
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -22,10 +23,15 @@
     "eslint-plugin-import": "^2.32.0",
     "firebase-admin": "^13.5.0",
     "firebase-functions": "^6.6.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.8"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
-    "cors": "^2.8.5"
+    "@langchain/core": "^1.0.3",
+    "@langchain/langgraph": "^1.0.1",
+    "@langchain/langgraph-checkpoint": "^1.0.0",
+    "cors": "^2.8.5",
+    "zod": "^4.1.12"
   }
 }
