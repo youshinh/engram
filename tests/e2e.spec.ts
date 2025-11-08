@@ -14,6 +14,7 @@ test.describe('en:gram E2E Tests', () => {
   test('should add a new text note', async ({ page }) => {
     const noteContent = `This is a test note added at ${new Date().toISOString()}`;
     await page.getByPlaceholder('Write your thoughts here...').fill(noteContent);
+    await expect(page.getByRole('button', { name: 'Add Note' })).toBeEnabled(); // <--- ADDED THIS LINE
     await page.getByRole('button', { name: 'Add Note' }).click();
 
     // Navigate to the notes page to verify the note was added
