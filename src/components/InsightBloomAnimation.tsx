@@ -7,7 +7,7 @@ interface InsightBloomAnimationProps {
 
 const InsightBloomAnimation: React.FC<InsightBloomAnimationProps> = ({ isAnimating }) => {
   return (
-    <div className="insight-bloom-animation">
+    <div className="insight-bloom-animation" data-testid="insight-bloom-animation">
       {/* 簡素なアニメーションのプレースホルダー */}
       {isAnimating ? (
         <div className="spinner"></div> // 仮のスピナー

@@ -41,7 +41,7 @@ body {
   --background-tertiary: #e5e5ea;
 
   /* Glassmorphism */
-  --glass-background: rgba(242, 242, 247, 0.7);
+  --glass-background: rgba(242, 242, 247, 0.6);
   --glass-blur: blur(20px);
   --glass-border: rgba(110, 110, 115, 0.2);
 
@@ -64,12 +64,12 @@ body {
   --text-on-accent: #ffffff;
 
   /* Backgrounds */
-  --background-primary: #000000;
-  --background-secondary: #1c1c1e;
+  --background-primary: #4b4b4b;
+  --background-secondary: #32323d;
   --background-tertiary: #2c2c2e;
 
   /* Glassmorphism */
-  --glass-background: rgba(28, 28, 30, 0.65);
+  --glass-background: rgba(28, 28, 30, 0.5);
   --glass-blur: blur(20px);
   --glass-border: rgba(84, 84, 88, 0.65);
 
@@ -105,11 +105,13 @@ body {
   background: var(--glass-background);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-radius: 18px;
+  border-radius: 16px;
   border: 1px solid var(--glass-border);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
   transition: background 0.3s, border 0.3s;
   padding: 16px; /* Added padding */
+  /* margin-top: 16px; */
+  margin-bottom: 8px;
 }
 
 /* Note Card Specific Styles */
@@ -615,10 +617,5 @@ body {
   align-items: center;
 }
 
-.ace-response-area.error p::before {
-  font-family: 'Material Symbols Outlined';
-  content: "warning";
-  margin-right: 8px;
-  font-size: 1.2em;
-}
+
 

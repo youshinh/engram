@@ -1,0 +1,166 @@
+[debug] [2025-11-05T13:06:20.574Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-05T13:06:20.576Z] > authorizing via signed-in user (youshinh@gmail.com)
+[debug] [2025-11-05T13:06:22.495Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.496Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.496Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.497Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.497Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.499Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.499Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.499Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.499Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.499Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.500Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.500Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.501Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.501Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.501Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.502Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.502Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.502Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.502Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.502Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.504Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.504Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.504Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.504Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.504Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.509Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.510Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.510Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.510Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.510Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.511Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.511Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.511Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.511Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.511Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.512Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-05T13:06:22.512Z] > authorizing via signed-in user (youshinh@gmail.com)
+[debug] [2025-11-05T13:06:22.513Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.513Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.513Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.513Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.513Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.515Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.515Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.515Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.515Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.515Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.517Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.517Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.517Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.517Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.517Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.518Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.519Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.519Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.519Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.519Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.520Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.521Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.521Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.521Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.521Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.523Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.523Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.523Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.523Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.523Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.524Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.524Z] Checked if tokens are valid: false, expires at: 1762265925430
+[debug] [2025-11-05T13:06:22.524Z] > refreshing access token with scopes: []
+[debug] [2025-11-05T13:06:22.525Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-05T13:06:22.525Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.686Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.686Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.696Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/identitytoolkit.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.696Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/identitytoolkit.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.702Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.703Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.711Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/identitytoolkit.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.711Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/identitytoolkit.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.713Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.713Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.722Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseio.com [none]
+[debug] [2025-11-05T13:06:22.722Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseio.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.723Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.723Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.730Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.730Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.732Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.732Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.741Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/storage.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.741Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/storage.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.742Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.742Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.750Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.750Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.752Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.752Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.760Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseremoteconfig.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.760Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseremoteconfig.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.761Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.761Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.769Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseio.com [none]
+[debug] [2025-11-05T13:06:22.769Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseio.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.771Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.771Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.779Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.779Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.780Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.780Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.788Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.788Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.790Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.790Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.798Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/storage.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.798Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/storage.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.801Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.801Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.811Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/fcm.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.812Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/fcm.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.813Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.813Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.823Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseremoteconfig.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.823Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseremoteconfig.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:22.825Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-05T13:06:22.825Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-05T13:06:22.835Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/fcm.googleapis.com [none]
+[debug] [2025-11-05T13:06:22.836Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/fcm.googleapis.com x-goog-quota-user=projects/engram-2025
+[debug] [2025-11-05T13:06:23.727Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/identitytoolkit.googleapis.com 403
+[debug] [2025-11-05T13:06:23.727Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/identitytoolkit.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:23.822Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebasedataconnect.googleapis.com 403
+[debug] [2025-11-05T13:06:23.823Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:23.828Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseio.com 403
+[debug] [2025-11-05T13:06:23.829Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseio.com [omitted]
+[debug] [2025-11-05T13:06:23.829Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseremoteconfig.googleapis.com 403
+[debug] [2025-11-05T13:06:23.829Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseremoteconfig.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:23.829Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/storage.googleapis.com 403
+[debug] [2025-11-05T13:06:23.829Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/storage.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:23.831Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseapphosting.googleapis.com 403
+[debug] [2025-11-05T13:06:23.831Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:23.831Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/fcm.googleapis.com 403
+[debug] [2025-11-05T13:06:23.831Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/fcm.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:24.037Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/identitytoolkit.googleapis.com 403
+[debug] [2025-11-05T13:06:24.037Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/identitytoolkit.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:24.725Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/fcm.googleapis.com 403
+[debug] [2025-11-05T13:06:24.725Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/fcm.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:24.726Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebasedataconnect.googleapis.com 403
+[debug] [2025-11-05T13:06:24.726Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:24.726Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseapphosting.googleapis.com 403
+[debug] [2025-11-05T13:06:24.726Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:24.726Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseio.com 403
+[debug] [2025-11-05T13:06:24.727Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseio.com [omitted]
+[debug] [2025-11-05T13:06:24.733Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseremoteconfig.googleapis.com 403
+[debug] [2025-11-05T13:06:24.734Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/firebaseremoteconfig.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:25.250Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/storage.googleapis.com 403
+[debug] [2025-11-05T13:06:25.250Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/engram-2025/services/storage.googleapis.com [omitted]
+[debug] [2025-11-05T13:06:25.309Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-05T13:06:25.309Z] > authorizing via signed-in user (youshinh@gmail.com)
+[debug] [2025-11-05T13:06:25.311Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-05T13:06:25.311Z] > authorizing via signed-in user (youshinh@gmail.com)
+[debug] [2025-11-05T13:06:25.374Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-05T13:06:25.374Z] > authorizing via signed-in user (youshinh@gmail.com)
+[debug] [2025-11-05T13:06:25.375Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-05T13:06:25.375Z] > authorizing via signed-in user (youshinh@gmail.com)

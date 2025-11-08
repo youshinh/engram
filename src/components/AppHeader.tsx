@@ -10,7 +10,7 @@ interface AppHeaderProps {
 
 const AppHeader: React.FC<AppHeaderProps> = ({ toggleNav, toggleTheme, currentTheme }) => {
   return (
-    <header className="app-header glass-card">
+    <header className="app-header">
       <button onClick={toggleNav} className="icon-button">
         <span className="material-symbols-outlined">menu</span>
       </button>

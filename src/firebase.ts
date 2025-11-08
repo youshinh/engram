@@ -1,90 +1,87 @@
+import { initializeApp } from 'firebase/app';
+import { getFunctions, httpsCallable, connectFunctionsEmulator } from 'firebase/functions';
 import { Note } from './db';
 
-// Placeholder for Firebase Cloud Functions
-// In a real scenario, this would use Firebase SDK to call a callable function.
+// Firebaseプロジェクトの設定
+// TODO: 実際のFirebaseプロジェクト設定に置き換える
+const firebaseConfig = {
+  apiKey: "dummy-api-key",
+  authDomain: "engram-2025.firebaseapp.com",
+  projectId: "engram-2025",
+  storageBucket: "engram-2025.appspot.com",
+  messagingSenderId: "dummy-sender-id",
+  appId: "dummy-app-id"
+};
+
+// Firebaseアプリを初期化
+const app = initializeApp(firebaseConfig);
+const functions = getFunctions(app);
+
+// ローカルエミュレータを使用する場合
+if (import.meta.env.DEV) {
+  connectFunctionsEmulator(functions, 'localhost', 5001); // Cloud Functionsエミュレータのポート
+}
 
 interface InsightSuggestion {
   targetNoteId: string;
   reasoning: string;
 }
 
+// findConnectionsCloud Cloud Functionを呼び出す
 export async function findConnectionsCloud(
-  newNote: { id: string; type: Note['type']; content: string },
-  contextNotes: { id: string; type: Note['type']; content: string }[]
+  newNote: { id: string; type: Note['type']; content: string | Blob },
+  contextNotes: { id: string; type: Note['type']; content: string | Blob }[]
 ): Promise<InsightSuggestion[]> {
-  console.log('Calling findConnectionsCloud (mocked)...');
-  console.log('New Note:', newNote);
-  console.log('Context Notes:', contextNotes);
-
-  // Simulate a network delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-
-  // Return a mock response
-  return [
-    {
-      targetNoteId: contextNotes[0]?.id || 'mock-id-1',
-      reasoning: 'This is a mock connection reasoning from cloud.',
-    },
-  ];
+  const callable = httpsCallable<any, { suggestions: InsightSuggestion[] }>(functions, 'findConnectionsCloud');
+  const result = await callable({ note: newNote, contextNotes });
+  return result.data.suggestions;
 }
 
-export async function embedNote(
-  type: Note['type'],
-  content: string
-): Promise<number[]> {
-  console.log('Calling embedNote (mocked)...');
-  console.log('Type:', type);
-  console.log('Content:', content.substring(0, 50) + '...'); // Log first 50 chars
+// embedNote Cloud Functionを呼び出す
+export const embedNote = httpsCallable<{
+  content: string;
+  mimeType?: string;
+}, {
+  embedding: number[];
+  caption?: string;
+}>(functions, 'embedNote');
 
-  // Simulate a network delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-
-  // Return a mock embedding (e.g., a fixed-size array of random numbers)
-  const mockEmbedding = Array.from({ length: 768 }, () => Math.random()); // Common embedding size
-  return mockEmbedding;
+interface EngrammerFlowResponse {
+  thread_id: string;
+  state: any; // LangGraphの状態は動的であるためany
 }
 
-interface AceFlowResponse {
-  response: string;
-  playbookSize: number;
-}
-
-export async function callAceFlow(
-  thread_id: string,
+// Engrammerフローを開始する Cloud Functionを呼び出す
+export async function engrammerFlow_start(
   query: string
-): Promise<AceFlowResponse> {
-  console.log('Calling aceFlow (mocked)...');
-  console.log('Thread ID:', thread_id);
-  console.log('Query:', query);
-
-  // Simulate a network delay
-  await new Promise(resolve => setTimeout(resolve, 2000));
-
-  // Return a mock response
-  return {
-    response: `This is a mock response from ACE for query: "${query}". Playbook size: 10.`,
-    playbookSize: 10,
-  };
+): Promise<EngrammerFlowResponse> {
+  const callable = httpsCallable<any, EngrammerFlowResponse>(functions, 'engrammerFlow_start');
+  const result = await callable({ query });
+  return result.data;
 }
 
-export async function getPlaybookNote(noteId: string): Promise<Note | null> {
-  console.log('Calling getPlaybookNote (mocked)...');
-  console.log('Note ID:', noteId);
+// Engrammerの状態を取得する Cloud Functionを呼び出す
+export async function getEngrammerState(
+  thread_id: string
+): Promise<EngrammerFlowResponse> {
+  const callable = httpsCallable<any, EngrammerFlowResponse>(functions, 'getEngrammerState');
+  const result = await callable({ thread_id });
+  return result.data;
+}
 
-  // Simulate a network delay
-  await new Promise(resolve => setTimeout(resolve, 500));
+// Engrammerフローを続行する Cloud Functionを呼び出す
+export async function engrammerFlow_continue(
+  thread_id: string,
+  userInput: string
+): Promise<EngrammerFlowResponse> {
+  const callable = httpsCallable<any, EngrammerFlowResponse>(functions, 'engrammerFlow_continue');
+  const result = await callable({ thread_id, userInput });
+  return result.data;
+}
 
-  // Return a mock Note
-  if (noteId === 'mock-playbook-note-id') { // Example for a specific mock ID
-    return {
-      id: 'mock-playbook-note-id',
-      type: 'text',
-      content: 'This is a mock playbook note content from the cloud.',
-      createdAt: new Date(),
-      embeddingStatus: 'completed',
-      insightStatus: 'completed',
-      status: 'active',
-    };
-  }
-  return null;
+// getPlaybookNote Cloud Functionを呼び出す
+export async function engrammerFlow_getNote(noteId: string): Promise<Note | null> {
+  const callable = httpsCallable<any, Note | null>(functions, 'engrammerFlow_getNote');
+  const result = await callable({ noteId });
+  return result.data;
 }

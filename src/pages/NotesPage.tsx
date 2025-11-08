@@ -37,7 +37,7 @@ const NotesPage: React.FC = () => {
   const handleDeleteNote = useCallback(async (id: string) => {
     if (window.confirm('Are you sure you want to delete this note?')) {
       try {
-        await db.deleteNote(id);
+        await db.notes.delete(id);
         setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
       } catch (error) {
         console.error("Failed to delete note:", error);

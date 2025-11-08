@@ -5,16 +5,16 @@ import '../index.css';
 interface NoteCardProps {
   note: Note;
   onDelete: (id: string) => void;
-  onUpdateStatus: (id: string, status: NoteStatus) => void;
-  onUpdatePinned: (id: string, isPinned: boolean) => void;
-  onUpdateTaskCompletion: (id: string, isCompleted: boolean) => void;
+  onArchiveToggle: (id: string, status: NoteStatus) => void;
+  onPinToggle: (id: string, isPinned: boolean) => void;
+  onUpdateTaskCompletion?: (id: string, isCompleted: boolean) => void;
 }
 
 const NoteCard: React.FC<NoteCardProps> = ({ 
   note, 
   onDelete, 
-  onUpdateStatus, 
-  onUpdatePinned,
+  onArchiveToggle, 
+  onPinToggle,
   onUpdateTaskCompletion
 }) => {
   const formattedDate = note.createdAt.toLocaleString();
@@ -43,7 +43,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
             <input 
               type="checkbox" 
               checked={note.isCompleted || false} 
-              onChange={() => onUpdateTaskCompletion(note.id, !note.isCompleted)}
+              onChange={() => onUpdateTaskCompletion && onUpdateTaskCompletion(note.id, !note.isCompleted)}
             />
             <p style={{ textDecoration: note.isCompleted ? 'line-through' : 'none' }}>
               {note.content as string}
@@ -81,7 +81,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
         <div className="note-header-left">
           <span className="note-type">{note.type.toUpperCase()}</span>
           <div className="note-actions-secondary">
-            <button onClick={() => onUpdateStatus(note.id, note.status === 'active' ? 'archived' : 'active')} className="icon-button small">
+            <button onClick={() => onArchiveToggle(note.id, note.status === 'active' ? 'archived' : 'active')} className="icon-button small">
               <span className="material-symbols-outlined">
                 {note.status === 'active' ? 'archive' : 'unarchive'}
               </span>
@@ -93,7 +93,7 @@ const NoteCard: React.FC<NoteCardProps> = ({
         </div>
       </div>
       <div className="note-actions-main-pin"> {/* New container for pin button */}
-        <button onClick={() => onUpdatePinned(note.id, !note.isPinned)} className="icon-button small">
+        <button onClick={() => onPinToggle(note.id, !note.isPinned)} className="icon-button small">
           <span className="material-symbols-outlined">
             {note.isPinned ? 'keep' : 'keep_off'}
           </span>

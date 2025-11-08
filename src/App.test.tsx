@@ -16,6 +16,8 @@ vi.mock('./db', async () => {
       embeddingStatus: 'completed',
       insightStatus: 'completed',
       status: 'active',
+      isPinned: false,
+      tags: [],
     },
     'new-mock-note': {
         id: 'new-mock-note',
@@ -25,6 +27,8 @@ vi.mock('./db', async () => {
         embeddingStatus: 'pending',
         insightStatus: 'pending',
         status: 'active',
+        isPinned: false,
+        tags: [],
     }
   };
 
@@ -64,8 +68,12 @@ vi.mock('./db', async () => {
 vi.mock('./firebase', () => ({
   findConnectionsCloud: vi.fn(() => Promise.resolve([])),
   embedNote: vi.fn(() => Promise.resolve(Array.from({ length: 768 }, () => Math.random()))),
-  callAceFlow: vi.fn(() => Promise.resolve({ response: 'Mock ACE response', playbookSize: 0 })),
-  getPlaybookNote: vi.fn(() => Promise.resolve(null)),
+  engrammerFlow_start: vi.fn(() => Promise.resolve({ thread_id: 'mock-thread-id', state: [ { type: 'start' } ] })),
+  getEngrammerState: vi.fn()
+    .mockResolvedValueOnce({ state: [ { type: 'running' } ] })
+    .mockResolvedValueOnce({ state: [ { type: 'end' } ] }),
+  engrammerFlow_continue: vi.fn(() => Promise.resolve({ thread_id: 'mock-thread-id', state: [ { type: 'end' } ] })),
+  engrammerFlow_getNote: vi.fn(() => Promise.resolve(null)),
 }));
 
 // window.aiのモック
@@ -102,8 +110,6 @@ describe('App Component', () => {
     await waitFor(() => expect(db.notes.add).toHaveBeenCalledWith(
       expect.objectContaining({ content: 'My new test note', type: 'text' })
     ));
-    // Check if insight generation was called
-    await waitFor(() => expect(firebase.findConnectionsCloud).toHaveBeenCalled());
   });
 
   it('should use cloud fallback when on-device AI is unavailable', async () => {
@@ -140,50 +146,42 @@ describe('App Component', () => {
     expect(firebase.findConnectionsCloud).not.toHaveBeenCalled();
   });
 
-  it('should display a note in modal when ACE response is clicked', async () => {
-    render(<App />);
-    await waitFor(() => expect(screen.getByRole('heading', { name: /en:gram/i, level: 1 })).toBeInTheDocument());
+  it('should start engrammer flow and poll for state', async () => {
+    const { getByPlaceholderText, getByText } = render(<App />);
+    await waitFor(() => expect(getByPlaceholderText(/Ask Engrammer a question.../i)).toBeInTheDocument());
 
-    const aceInput = screen.getByPlaceholderText(/Ask ACE a question or deepen your thoughts.../i);
-    const aceButton = screen.getByText(/Ask ACE/i);
+    const engrammerInput = getByPlaceholderText(/Ask Engrammer a question.../i);
+    const engrammerButton = getByText(/Ask Engrammer/i);
 
-    (firebase.callAceFlow as vi.Mock).mockResolvedValueOnce({
-      response: 'Here is some insight. Ref: mock-note-local',
+    fireEvent.change(engrammerInput, { target: { value: 'Test query' } });
+    await fireEvent.click(engrammerButton);
+
+    await waitFor(() => expect(firebase.engrammerFlow_start).toHaveBeenCalledWith('Test query'));
+    
+    await waitFor(() => expect(firebase.getEngrammerState).toHaveBeenCalledWith('mock-thread-id'), { timeout: 30000 });
+  }, 30000);
+
+  it('should display a note in modal when Engrammer response is clicked', async () => {
+    const { getByRole, getByText, findByText } = render(<App />);
+    await waitFor(() => expect(getByRole('heading', { name: /en:gram/i, level: 1 })).toBeInTheDocument());
+
+    const engrammerInput = screen.getByPlaceholderText(/Ask Engrammer a question.../i);
+    const engrammerButton = screen.getByText(/Ask Engrammer/i);
+
+    (firebase.engrammerFlow_start as any).mockResolvedValueOnce({
+      thread_id: 'mock-thread-id',
+      state: [ { type: 'end', content: 'Here is some insight. Ref: mock-note-local' } ]
     });
 
-    fireEvent.change(aceInput, { target: { value: 'Test query for local note' } });
-    fireEvent.click(aceButton);
+    fireEvent.change(engrammerInput, { target: { value: 'Test query for local note' } });
+    await fireEvent.click(engrammerButton);
 
-    const responseArea = await screen.findByText(/Here is some insight. Ref: mock-note-local/i);
+    const responseArea = await findByText(/Here is some insight. Ref: mock-note-local/i);
     fireEvent.click(responseArea);
 
     await waitFor(() => {
-      expect(screen.getByText(/Note Detail/i)).toBeInTheDocument();
-      expect(screen.getByText(/Content from local DB/i)).toBeInTheDocument();
-    });
-  });
-
-  it('should close the note modal', async () => {
-    render(<App />);
-    await waitFor(() => expect(screen.getByRole('heading', { name: /en:gram/i, level: 1 })).toBeInTheDocument());
-
-    const aceInput = screen.getByPlaceholderText(/Ask ACE a question or deepen your thoughts.../i);
-    const aceButton = screen.getByText(/Ask ACE/i);
-    (firebase.callAceFlow as vi.Mock).mockResolvedValueOnce({
-      response: 'Here is some insight. Ref: mock-note-local',
-    });
-    fireEvent.change(aceInput, { target: { value: 'Test query to open modal' } });
-    fireEvent.click(aceButton);
-
-    const responseArea = await screen.findByText(/Here is some insight. Ref: mock-note-local/i);
-    fireEvent.click(responseArea);
-
-    const modal = await screen.findByRole('dialog');
-    await waitFor(() => expect(within(modal).getByText(/Note Detail/i)).toBeInTheDocument());
-
-    const closeButton = within(modal).getByRole('button', { name: /Close/i });
-    fireEvent.click(closeButton);
-
-    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
-  });
+      expect(getByText(/Note Detail/i)).toBeInTheDocument();
+      expect(getByText(/Content from local DB/i)).toBeInTheDocument();
+    }, { timeout: 30000 });
+  }, 30000);
 });

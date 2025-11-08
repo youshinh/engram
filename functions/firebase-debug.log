@@ -1,0 +1,103 @@
+[debug] [2025-11-08T08:07:39.431Z] ----------------------------------------------------------------------
+[debug] [2025-11-08T08:07:39.433Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\yoush\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start --only functions
+[debug] [2025-11-08T08:07:39.433Z] CLI Version:   14.18.0
+[debug] [2025-11-08T08:07:39.433Z] Platform:      win32
+[debug] [2025-11-08T08:07:39.433Z] Node Version:  v22.18.0
+[debug] [2025-11-08T08:07:39.433Z] Time:          Sat Nov 08 2025 17:07:39 GMT+0900 (日本標準時)
+[debug] [2025-11-08T08:07:39.433Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-11-08T08:07:39.435Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-11-08T08:07:39.582Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-11-08T08:07:39.582Z] > authorizing via signed-in user (youshinh@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2025-11-08T08:07:39.590Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-11-08T08:07:39.591Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2025-11-08T08:07:39.594Z] Emulator locator file path: C:\Users\yoush\AppData\Local\Temp\hub-engram-2025.json
+[debug] [2025-11-08T08:07:39.594Z] [hub] writing locator at C:\Users\yoush\AppData\Local\Temp\hub-engram-2025.json
+[debug] [2025-11-08T08:07:39.609Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-11-08T08:07:39.609Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-11-08T08:07:39.609Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-11-08T08:07:39.609Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: apphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mapphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect\u001b[22m"}}
+[debug] [2025-11-08T08:07:39.623Z] defaultcredentials: writing to file C:\Users\yoush\AppData\Roaming\firebase\youshinh_gmail_com_application_default_credentials.json
+[debug] [2025-11-08T08:07:39.625Z] Setting GAC to C:\Users\yoush\AppData\Roaming\firebase\youshinh_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\yoush\\AppData\\Roaming\\firebase\\youshinh_gmail_com_application_default_credentials.json"}}
+[debug] [2025-11-08T08:07:39.625Z] Checked if tokens are valid: false, expires at: 1762351581825
+[debug] [2025-11-08T08:07:39.625Z] Checked if tokens are valid: false, expires at: 1762351581825
+[debug] [2025-11-08T08:07:39.626Z] > refreshing access token with scopes: []
+[debug] [2025-11-08T08:07:39.626Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-11-08T08:07:39.626Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-08T08:07:39.805Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-11-08T08:07:39.805Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-11-08T08:07:39.813Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/engram-2025/adminSdkConfig [none]
+[debug] [2025-11-08T08:07:39.908Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-11-08T08:07:39.908Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2025-11-08T08:07:40.400Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/engram-2025/adminSdkConfig 403
+[debug] [2025-11-08T08:07:40.400Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/engram-2025/adminSdkConfig {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2025-11-08T08:07:40.400Z] Failed to get Admin SDK config for engram-2025, falling back to cache Failed to get Admin SDK for Firebase project engram-2025. Please make sure the project exists and your account has permission to access it. {"name":"FirebaseError","children":[],"exit":2,"message":"Failed to get Admin SDK for Firebase project engram-2025. Please make sure the project exists and your account has permission to access it.","original":{"name":"FirebaseError","children":[],"context":{"body":{"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}},"response":{"statusCode":403}},"exit":1,"message":"Request to https://firebase.googleapis.com/v1beta1/projects/engram-2025/adminSdkConfig had HTTP Error: 403, The caller does not have permission","status":403},"status":500}
+[warn] !  functions: Unable to fetch project Admin SDK configuration, Admin SDK behavior in Cloud Functions emulator may be incorrect. {"metadata":{"emulator":{"name":"functions"},"message":"Unable to fetch project Admin SDK configuration, Admin SDK behavior in Cloud Functions emulator may be incorrect."}}
+[info] i  functions: Watching "C:\Users\yoush\Desktop\app\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\yoush\\Desktop\\app\\functions\" for Cloud Functions..."}}
+[debug] [2025-11-08T08:07:40.429Z] Validating nodejs source
+[debug] [2025-11-08T08:07:40.998Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "main": "lib/index.js",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "eslint": "^9.39.0",
+    "eslint-plugin-import": "^2.32.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.6.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.5"
+  }
+}
+[debug] [2025-11-08T08:07:40.999Z] Building nodejs source
+[debug] [2025-11-08T08:07:40.999Z] Failed to find version of module node: reached end of search path C:\Users\yoush\Desktop\app\functions\node_modules
+[info] +  functions: Using node@22 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-11-08T08:07:41.004Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-11-08T08:07:41.012Z] Found firebase-functions binary at 'C:\Users\yoush\Desktop\app\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8344
+
+[debug] [2025-11-08T08:07:41.526Z] Got response from /__/functions.yaml {"endpoints":{"findConnectionsCloud":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"callableTrigger":{},"entryPoint":"findConnectionsCloud"},"embedNote":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"callableTrigger":{},"entryPoint":"embedNote"},"engrammerFlow_start":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"callableTrigger":{},"entryPoint":"engrammerFlow_start"},"getEngrammerState":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"callableTrigger":{},"entryPoint":"getEngrammerState"},"engrammerFlow_continue":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"callableTrigger":{},"entryPoint":"engrammerFlow_continue"},"engrammerFlow_getNote":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"callableTrigger":{},"entryPoint":"engrammerFlow_getNote"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{},"params":[{"name":"GEMINI_API_KEY","type":"string"}]}
+[info] +  functions: Loaded functions definitions from source: findConnectionsCloud, embedNote, engrammerFlow_start, getEngrammerState, engrammerFlow_continue, engrammerFlow_getNote. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: findConnectionsCloud, embedNote, engrammerFlow_start, getEngrammerState, engrammerFlow_continue, engrammerFlow_getNote."}}
+[info] +  functions[us-central1-findConnectionsCloud]: http function initialized (http://127.0.0.1:5001/engram-2025/us-central1/findConnectionsCloud). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/engram-2025/us-central1/findConnectionsCloud)."}}
+[info] +  functions[us-central1-embedNote]: http function initialized (http://127.0.0.1:5001/engram-2025/us-central1/embedNote). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/engram-2025/us-central1/embedNote)."}}
+[info] +  functions[us-central1-engrammerFlow_start]: http function initialized (http://127.0.0.1:5001/engram-2025/us-central1/engrammerFlow_start). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/engram-2025/us-central1/engrammerFlow_start)."}}
+[info] +  functions[us-central1-getEngrammerState]: http function initialized (http://127.0.0.1:5001/engram-2025/us-central1/getEngrammerState). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/engram-2025/us-central1/getEngrammerState)."}}
+[info] +  functions[us-central1-engrammerFlow_continue]: http function initialized (http://127.0.0.1:5001/engram-2025/us-central1/engrammerFlow_continue). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/engram-2025/us-central1/engrammerFlow_continue)."}}
+[info] +  functions[us-central1-engrammerFlow_getNote]: http function initialized (http://127.0.0.1:5001/engram-2025/us-central1/engrammerFlow_getNote). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/engram-2025/us-central1/engrammerFlow_getNote)."}}
+[debug] [2025-11-08T08:07:45.565Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub host: 127.0.0.1 port: 4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 

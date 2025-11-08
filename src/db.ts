@@ -16,51 +16,47 @@ import { v4 as uuidv4 } from 'uuid';
  * - 'workshop': マルチモーダルなワークショップノート (contentはJSON文字列)
  */
 export type NoteType = 'text' | 'image' | 'audio' | 'url' | 'project' | 'task' | 'workshop';
+export type NoteStatus = 'active' | 'archived';
 
-/**
- * ノートのEmbedding処理ステータス
- */
-export type EmbeddingStatus = 'pending' | 'completed' | 'failed';
+export interface WorkshopContent {
+  text: string;
+  sketchDataUrl?: string;
+  imageIds?: string;
+  modelIds?: string;
+  audioId?: string;
+}
 
-/**
- * ノートのInsight処理ステータス
- */
-export type InsightStatus = 'pending' | 'completed' | 'failed';
-
-/**
- * ノートエンティティ
- */
 export interface Note {
   id: string;
   type: NoteType;
-  content: string | object; // タイプによって異なる (例: textはstring, workshopはobject)
+  content: string | Blob;
+  generatedCaption?: string; // For AI-generated captions of images
   createdAt: Date;
-  embeddingStatus: EmbeddingStatus;
-  insightStatus: InsightStatus;
-  embedding?: number[]; // Multimodal Embeddingベクトル
-
-  // 複合機能からの追加フィールド
-  projectId?: string; // 関連するプロジェクトノートのID
-  location?: string; // 位置情報 (例: "Tokyo, Japan")
-  tags?: string[]; // タグ
-  isPinned?: boolean; // ピン留めされているか
-  status?: 'active' | 'archived'; // ノートの状態
-  isCompleted?: boolean; // タスクノートの場合、完了しているか
+  embedding?: number[];
+  embeddingStatus: 'pending' | 'completed' | 'failed';
+  insightStatus: 'pending' | 'completed' | 'failed';
+  projectId?: string | null;
+  location?: string | null;
+  status: NoteStatus;
+  isPinned: boolean;
+  tags?: string[];
+  isCompleted?: boolean;
+  summary?: string;
 }
 
-/**
- * 繋がりエンティティ (Relation)
- */
+export type RelationSource = 'ai_suggestion' | 'user_manual';
+export type RelationFeedback = 'useful' | 'harmful' | 'pending';
+
 export interface Relation {
   id: string;
-  sourceNoteId: string; // 繋がりの起点となるノートのID
-  targetNoteId: string; // 繋がりの終点となるノートのID
-  reasoning: string; // なぜ繋がっているかの理由 (AIが生成)
+  sourceId: string;
+  targetId: string;
+  source: RelationSource;
+  reasoning?: string;
+  feedback: RelationFeedback;
   createdAt: Date;
-
-  // ユーザーフィードバック
-  feedback?: 'useful' | 'harmful';
-  userCorrectedReasoning?: string; // ユーザーが修正した理由
+  strength?: number;
+  userCorrectedReasoning?: string;
 }
 
 // ----------------------------------------------------------------------------
@@ -72,49 +68,48 @@ export class EngramDB extends Dexie {
   notes!: Table<Note, string>;
   relations!: Table<Relation, string>;
 
-  constructor() {
-    super('EngramDB');
+  constructor(databaseName: string = 'EngramDB') {
+    super(databaseName);
     this.version(5).stores({
-      notes: '++id, createdAt, embeddingStatus, insightStatus, projectId, *tags, status',
-      relations: '++id, sourceNoteId, targetNoteId, createdAt',
-    });
-
-    // マイグレーション (バージョンアップ時のスキーマ変更に対応)
-    this.version(1).upgrade(async () => {
-      // 初期バージョンなので特に処理なし
-    });
-
-    this.version(2).upgrade(async () => {
-      // Note に embeddingStatus, insightStatus を追加
-      await this.notes.toCollection().modify(note => {
-        note.embeddingStatus = 'pending';
-        note.insightStatus = 'pending';
+      notes: `
+        id,
+        type,
+        createdAt,
+        embeddingStatus,
+        insightStatus,
+        projectId,
+        status,
+        isPinned,
+        location,
+        *tags
+      `,
+      relations: `
+        id,
+        sourceId,
+        targetId,
+        [sourceId+targetId],
+        source,
+        feedback,
+        createdAt
+      `
+    }).upgrade(async (tx) => {
+      // version(4)からのマイグレーションロジック
+      await tx.table('notes').toCollection().modify(note => {
+        note.projectId = note.projectId === undefined ? null : note.projectId;
+        note.location = note.location === undefined ? null : note.location;
+        note.status = note.status === undefined ? 'active' : note.status;
+        note.isPinned = note.isPinned === undefined ? false : note.isPinned;
+        note.tags = note.tags === undefined ? [] : note.tags; // Initialize tags as empty array
+        note.isCompleted = note.isCompleted === undefined ? undefined : note.isCompleted;
+        note.summary = note.summary === undefined ? undefined : note.summary;
+        if (note.embedding !== undefined && typeof note.embedding === 'number') {
+          note.embedding = [note.embedding]; // Convert single number to array for backward compatibility
+        }
       });
-    });
-
-    this.version(3).upgrade(async () => {
-      // Note に projectId, location, tags, isPinned, status, isCompleted を追加
-      await this.notes.toCollection().modify(note => {
-        note.projectId = undefined;
-        note.location = undefined;
-        note.tags = [];
-        note.isPinned = false;
-        note.status = 'active';
-        note.isCompleted = false;
+      return tx.table('relations').toCollection().modify(relation => {
+        relation.strength = relation.strength === undefined ? undefined : relation.strength;
+        relation.userCorrectedReasoning = relation.userCorrectedReasoning === undefined ? undefined : relation.userCorrectedReasoning;
       });
-    });
-
-    this.version(4).upgrade(async () => {
-      // Relation に feedback, userCorrectedReasoning を追加
-      await this.relations.toCollection().modify(relation => {
-        relation.feedback = undefined;
-        relation.userCorrectedReasoning = undefined;
-      });
-    });
-
-    this.version(5).upgrade(async () => {
-      // Note の content を string | object に変更 (workshopノート対応)
-      // 既存のstring contentはそのまま、新しいworkshopノートはobjectとして保存される
     });
 
 
@@ -122,68 +117,75 @@ export class EngramDB extends Dexie {
     // 3. フック (Hooks)
     // ----------------------------------------------------------------------------
 
-    // ノートが作成される前にIDと作成日時を設定するフック
-    this.notes.hook('creating', (primKey, obj, trans) => {
-      if (!obj.id) obj.id = uuidv4();
-      if (!obj.createdAt) obj.createdAt = new Date();
-      if (!obj.embeddingStatus) obj.embeddingStatus = 'pending';
-      if (!obj.insightStatus) obj.insightStatus = 'pending';
-      if (!obj.status) obj.status = 'active';
+    this.notes.hook('creating', (primKey, obj: Note) => {
+      if (obj.id === undefined) obj.id = uuidv4();
+      if (obj.createdAt === undefined) obj.createdAt = new Date();
+      if (obj.status === undefined) obj.status = 'active';
+      if (obj.isPinned === undefined) obj.isPinned = false;
+      if (obj.embeddingStatus === undefined) obj.embeddingStatus = 'pending';
+      if (obj.insightStatus === undefined) obj.insightStatus = 'pending';
+      if (obj.tags === undefined) obj.tags = []; // Initialize tags as empty array
     });
 
-    // 繋がりが作成される前にIDと作成日時を設定するフック
-    this.relations.hook('creating', (primKey, obj, trans) => {
-      if (!obj.id) obj.id = uuidv4();
-      if (!obj.createdAt) obj.createdAt = new Date();
+    this.relations.hook('creating', (primKey, obj: Relation) => {
+      if (obj.id === undefined) obj.id = uuidv4();
+      if (obj.createdAt === undefined) obj.createdAt = new Date();
+      if (obj.feedback === undefined) obj.feedback = 'pending';
     });
   }
 
-  // ----------------------------------------------------------------------------
-  // 4. ヘルパーメソッド
-  // ----------------------------------------------------------------------------
-
-  /**
-   * 指定されたステータスのノートをページネーションして取得する
-   * @param offset 取得開始位置
-   * @param limit 取得件数
-   * @param status ノートのステータス ('active' または 'archived')
-   * @returns ノートの配列
-   */
-  async getPaginatedNotes(offset: number, limit: number, status: 'active' | 'archived' = 'active'): Promise<Note[]> {
-    return this.notes
-      .where('status')
-      .equals(status)
-      .reverse() // 最新のノートから取得
-      .sortBy('createdAt')
-      .then(sortedNotes => sortedNotes.slice(offset, offset + limit));
+  // 3. ヘルパーメソッド
+  async getPaginatedNotes(offset: number, limit: number, status: NoteStatus = 'active', projectId?: string): Promise<Note[]> {
+    const query = this.notes.orderBy('createdAt').reverse();
+    const filtered = query.filter(note => {
+      let match = note.status === status;
+      if (projectId) {
+        match = match && note.projectId === projectId;
+      }
+      return match;
+    });
+    return filtered.offset(offset).limit(limit).toArray();
   }
 
-  /**
-   * 指定されたIDのノートを削除する
-   * @param id 削除するノートのID
-   */
-  async deleteNote(id: string): Promise<void> {
-    await this.notes.delete(id);
-    // 関連する繋がりも削除
-    await this.relations.where('sourceNoteId').equals(id).delete();
-    await this.relations.where('targetNoteId').equals(id).delete();
+  async countNotes(status: NoteStatus = 'active', projectId?: string): Promise<number> {
+    let query = this.notes.where('status').equals(status);
+    if (projectId) {
+      query = query.and(note => note.projectId === projectId);
+    }
+    return query.count();
   }
 
-  /**
-   * 指定されたIDの繋がりを削除する
-   * @param id 削除する繋がりのID
-   */
+  async getPaginatedRelations(offset: number, limit: number): Promise<Relation[]> {
+    return this.relations.orderBy('createdAt').reverse().offset(offset).limit(limit).toArray();
+  }
+
+  async countRelationsForNote(noteId: string): Promise<number> {
+    return this.relations.where('sourceId').equals(noteId).or('targetId').equals(noteId).count();
+  }
+
   async deleteRelation(id: string): Promise<void> {
     await this.relations.delete(id);
   }
 
-  /**
-   * 指定されたIDのノートをアーカイブする
-   * @param id アーカイブするノートのID
-   */
-  async archiveNote(id: string): Promise<void> {
-    await this.notes.update(id, { status: 'archived' });
+  async updateRelationFeedback(id: string, feedback: RelationFeedback, userCorrectedReasoning?: string): Promise<void> {
+    const updateData: Partial<Relation> = { feedback };
+    if (userCorrectedReasoning !== undefined) {
+      updateData.userCorrectedReasoning = userCorrectedReasoning;
+    }
+    await this.relations.update(id, updateData);
   }
-}
+
+  async updateNoteStatus(id: string, status: NoteStatus): Promise<void> {
+    await this.notes.update(id, { status });
+  }
+
+  async updateNotePinnedStatus(id: string, isPinned: boolean): Promise<void> {
+    await this.notes.update(id, { isPinned });
+  }
+
+  async updateTaskCompletion(id: string, isCompleted: boolean): Promise<void> {
+    await this.notes.update(id, { isCompleted });
+  }
+};
 
 export const db = new EngramDB();
