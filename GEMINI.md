@@ -50,3 +50,9 @@ To ensure code quality and prevent regressions, all future development will adhe
     *   Stage and commit the approved changes with a descriptive message.
     *   Update the internal progress tracker (`GEMINI.md` or memory).
 7.  **Proceed:** Move to the next task.
+
+---
+
+## Current Development Progress:
+
+- Firestore Checkpointer integration for Engrammer's asynchronous & durable execution is complete. Next, ensure LangGraph setup correctly uses the checkpointer for state persistence and handles asynchronous operations.
