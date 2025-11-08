@@ -32,25 +32,21 @@ The system is built on three foundational principles:
 *   **Environment**: Development requires Node.js v20+, Firebase CLI, and a modern version of Google Chrome with specific flags enabled for on-device AI testing.
 *   **Local Execution**: The local workflow involves running the Vite dev server and the Firebase Emulators (`functions`, `firestore`, `auth`) concurrently. The separate `npm run ace` process is **deprecated** as of v1.1.
 
-- Current Development Progress: UI/UX Redesign - Iconography and Button Styling, Layout and Responsiveness, ACE Section UI Refinement, Collapsible Sections and Pagination, Bug Fixes, and Documentation. Outstanding Issue: Collapsed Section Width for Connections.
-- UI/UX Redesign: Implemented icon-based NoteInput, allowing simultaneous text and file attachment with preview. Adjusted CSS for layout and styling. Updated MainPage prop types.
-- Image Embedding & Connection Generation: Resolved image embedding payload size limits via client-side resizing/JPEG compression. Implemented 2-stage image embedding (caption generation with `gemini-2.5-flash`, then embedding with `gemini-embedding-001`). Updated `embedNote` to return captions, saved to DB, and used for connection generation.
-- Workshop Note Handling: Implemented `workshop` note type for combined text/image submissions, correctly saving JSON content. AI processing now handles `workshop` notes for embedding and insight generation. NoteCard and ConnectionsPage now correctly display `workshop` note content.
-- Graph View Enhancements: Significantly improved Connections graph view UX. Hid React Flow attribution and default edge labels. Implemented interactive edge click (reasoning alert) and node click (highlight related elements) functionalities. Resolved multiple React Flow import and rendering errors (`MiniMap is not defined`, module resolution, default export issues, key duplication, node position errors) by updating to `@xyflow/react` and refining component logic.
-- Current Status: All identified issues resolved. Awaiting final user confirmation on all implemented features.
+## **4. Development Workflow (v1.2)**
 
-- **UI/UX & Dark Mode Refinements (Today's Work):**
-  - **Layout & Padding:**
-    - Fixed padding on `NoteCard`, `RelationCard`, and `NoteInput` to prevent text overflow.
-    - Re-architected `NoteCard` header to reposition pin and action buttons.
-    - Re-styled `RelationCard` to display action buttons horizontally and add separators for clarity.
-  - **Dark Mode:**
-    - Implemented and corrected the theme-switching mechanism in `App.tsx`.
-    - Ensured the theme toggle button in `AppHeader` is correctly wired.
-    - Fixed visibility issues with React Flow controls in dark mode.
-  - **Visual Polish:**
-    - Adjusted the "frosted glass" effect by decreasing background opacity for better translucency.
-  - **Bug Fixes:**
-    - Corrected several syntax errors in JSX and CSS that were introduced during the refactoring process.
-  - **Git:**
-    - Committed all UI/UX and dark mode changes.
+To ensure code quality and prevent regressions, all future development will adhere to the following workflow. Each step must be completed before proceeding to the next.
+
+1.  **Plan:** Define the scope and implementation strategy for the task.
+2.  **Implement:** Write or modify the code to fulfill the task requirements.
+3.  **Unit Test:**
+    *   Create or update unit tests for the implemented functionality using `vitest`.
+    *   Run `npm run test` to ensure all tests pass and there are no regressions.
+4.  **Code Review (Self-Review):**
+    *   Run `npx tsc` to confirm there are no TypeScript errors.
+    *   Report the results of the tests and type-check to the user.
+5.  **User Approval:**
+    *   Present the changes and obtain user approval before committing.
+6.  **Commit:**
+    *   Stage and commit the approved changes with a descriptive message.
+    *   Update the internal progress tracker (`GEMINI.md` or memory).
+7.  **Proceed:** Move to the next task.

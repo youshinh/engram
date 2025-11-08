@@ -126,40 +126,54 @@ export const embedNote = onCall(async (request) => {
 // Placeholder for engrammerFlow_start
 export const engrammerFlow_start = onCall(async (request) => {
   logger.info("engrammerFlow_start called with data:", request.data);
-  // TODO: Implement actual logic
   if (!request.data.query) {
     throw new HttpsError("invalid-argument", "The function must be called with \"query\".");
   }
-  const thread_id = `thread_${Date.now()}`;
-  return { thread_id, state: [{ type: "start", query: request.data.query }] };
+  const threadId = request.data.threadId || `thread_${Date.now()}`;
+  logger.info(`Starting Engrammer flow with threadId: ${threadId}`);
+  // In a real scenario, we would start the LangGraph execution here (non-blocking)
+  return { threadId };
 });
 
 // Placeholder for getEngrammerState
 export const getEngrammerState = onCall(async (request) => {
   logger.info("getEngrammerState called with data:", request.data);
-  // TODO: Implement actual logic
-  if (!request.data.thread_id) {
+  if (!request.data.threadId) {
     throw new HttpsError("invalid-argument", "The function must be called with \"thread_id\".");
   }
-  return { state: [{ type: "end", result: "This is a dummy response." }] };
+  // This mock simulates a state where the AI has processed the query
+  // and is now waiting for user feedback (Human-in-the-Loop).
+  return {   
+    status: "interrupted", // 'running', 'interrupted', 'done', 'error'  
+    latestResponse: "Supervisor analyzed the task and found a new theme between 'Woodworking Notes' and 'AI Agent Notes'. Reflector generated the following insight.",  
+    pendingInsights: [{ type: "new_strategy", description: "The user's interest in 'woodworking' and 'AI agents' shares a common theme of 'autonomous process design'." }],  
+    references: [{ source: "local_db", noteId: "uuid-note-1" }, { source: "local_db", noteId: "uuid-note-2" }],  
+    error: null   
+  };
 });
 
 // Placeholder for engrammerFlow_continue
 export const engrammerFlow_continue = onCall(async (request) => {
   logger.info("engrammerFlow_continue called with data:", request.data);
-  // TODO: Implement actual logic
-  if (!request.data.thread_id || !request.data.userInput) {
+  if (!request.data.threadId || !request.data.userInput) {
     throw new HttpsError("invalid-argument", "The function must be called with \"thread_id\" and \"userInput\".");
   }
-  return { state: [{ type: "end", result: "User input processed." }] };
+  // This mock simulates the end of the flow after user input.
+  return { status: "done", error: null };
 });
 
 // Placeholder for engrammerFlow_getNote
 export const engrammerFlow_getNote = onCall(async (request) => {
   logger.info("engrammerFlow_getNote called with data:", request.data);
-  // TODO: Implement actual logic
-  if (!request.data.noteId) {
-    throw new HttpsError("invalid-argument", "The function must be called with \"noteId\".");
+  if (!request.data.source || !request.data.noteId) {
+    throw new HttpsError("invalid-argument", "The function must be called with \"source\" and \"noteId\".");
   }
-  return null; // Return null as we don't have a real note
+  const { source, noteId } = request.data;
+  // This mock returns a dummy note object.
+  return { 
+    id: noteId, 
+    type: "text", 
+    content: `(Mock Data) This is the content for note [${noteId}] fetched from the '${source}' knowledge base. It's about the characteristics of beech wood.`, 
+    createdAt: new Date().toISOString() 
+  };
 });

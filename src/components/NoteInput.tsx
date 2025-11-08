@@ -81,7 +81,7 @@ const NoteInput: React.FC<NoteInputProps> = ({ onAddNote }) => {
           <span className="material-symbols-outlined">attach_file</span>
         </button>
         <div className="spacer"></div>
-        <button type="submit" className="icon-button submit-icon" disabled={isSubmitDisabled}>
+        <button type="submit" className="icon-button submit-icon" disabled={isSubmitDisabled} aria-label="Add Note">
           <span className="material-symbols-outlined">send</span>
         </button>
       </div>

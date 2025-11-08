@@ -1,87 +1,39 @@
-import { initializeApp } from 'firebase/app';
-import { getFunctions, httpsCallable, connectFunctionsEmulator } from 'firebase/functions';
-import { Note } from './db';
+import { initializeApp } from "firebase/app";
+import { getFunctions, httpsCallable } from "firebase/functions";
+import { Note } from "./db";
 
-// Firebaseプロジェクトの設定
-// TODO: 実際のFirebaseプロジェクト設定に置き換える
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "dummy-api-key",
-  authDomain: "engram-2025.firebaseapp.com",
-  projectId: "engram-2025",
-  storageBucket: "engram-2025.appspot.com",
-  messagingSenderId: "dummy-sender-id",
-  appId: "dummy-app-id"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Firebaseアプリを初期化
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const functions = getFunctions(app);
 
-// ローカルエミュレータを使用する場合
-if (import.meta.env.DEV) {
-  connectFunctionsEmulator(functions, 'localhost', 5001); // Cloud Functionsエミュレータのポート
-}
+// ==================================================================
+// Callable Functions
+// ==================================================================
 
-interface InsightSuggestion {
-  targetNoteId: string;
-  reasoning: string;
-}
+// Note: The 'data' property is automatically unwrapped by the SDK.
+// The return type of httpsCallable<RequestData, ResponseData> is Promise<HttpsCallableResult<ResponseData>>
+// and result.data gives you ResponseData.
 
-// findConnectionsCloud Cloud Functionを呼び出す
-export async function findConnectionsCloud(
-  newNote: { id: string; type: Note['type']; content: string | Blob },
-  contextNotes: { id: string; type: Note['type']; content: string | Blob }[]
-): Promise<InsightSuggestion[]> {
-  const callable = httpsCallable<any, { suggestions: InsightSuggestion[] }>(functions, 'findConnectionsCloud');
-  const result = await callable({ note: newNote, contextNotes });
-  return result.data.suggestions;
-}
+export const findConnectionsCloud = httpsCallable<{ note: Note, contextNotes: Note[] }, { suggestions: any[] }>(functions, 'findConnectionsCloud');
 
-// embedNote Cloud Functionを呼び出す
-export const embedNote = httpsCallable<{
-  content: string;
-  mimeType?: string;
-}, {
-  embedding: number[];
-  caption?: string;
-}>(functions, 'embedNote');
+export const embedNote = httpsCallable<{ content: string | Blob, mimeType?: string }, { embedding: number[], caption?: string }>(functions, 'embedNote');
 
-interface EngrammerFlowResponse {
-  thread_id: string;
-  state: any; // LangGraphの状態は動的であるためany
-}
+// --- Engrammer v1.1 Functions ---
 
-// Engrammerフローを開始する Cloud Functionを呼び出す
-export async function engrammerFlow_start(
-  query: string
-): Promise<EngrammerFlowResponse> {
-  const callable = httpsCallable<any, EngrammerFlowResponse>(functions, 'engrammerFlow_start');
-  const result = await callable({ query });
-  return result.data;
-}
+export const engrammerFlow_start = httpsCallable<{ query: string, threadId?: string }, { threadId: string }>(functions, 'engrammerFlow_start');
 
-// Engrammerの状態を取得する Cloud Functionを呼び出す
-export async function getEngrammerState(
-  thread_id: string
-): Promise<EngrammerFlowResponse> {
-  const callable = httpsCallable<any, EngrammerFlowResponse>(functions, 'getEngrammerState');
-  const result = await callable({ thread_id });
-  return result.data;
-}
+export const getEngrammerState = httpsCallable<{ threadId: string }, any>(functions, 'getEngrammerState');
 
-// Engrammerフローを続行する Cloud Functionを呼び出す
-export async function engrammerFlow_continue(
-  thread_id: string,
-  userInput: string
-): Promise<EngrammerFlowResponse> {
-  const callable = httpsCallable<any, EngrammerFlowResponse>(functions, 'engrammerFlow_continue');
-  const result = await callable({ thread_id, userInput });
-  return result.data;
-}
+export const engrammerFlow_continue = httpsCallable<{ threadId: string, userInput: string }, any>(functions, 'engrammerFlow_continue');
 
-// getPlaybookNote Cloud Functionを呼び出す
-export async function engrammerFlow_getNote(noteId: string): Promise<Note | null> {
-  const callable = httpsCallable<any, Note | null>(functions, 'engrammerFlow_getNote');
-  const result = await callable({ noteId });
-  return result.data;
-}
+export const engrammerFlow_getNote = httpsCallable<{ source: string, noteId: string }, Note | null>(functions, 'engrammerFlow_getNote');

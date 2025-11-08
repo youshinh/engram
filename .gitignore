@@ -1,4 +1,3 @@
-
 # Playwright
 node_modules/
 /test-results/
@@ -9,3 +8,8 @@ node_modules/
 
 # Firebase emulator runtime config
 .runtimeconfig.json
+
+# Firebase debug logs
+functions/firebase-debug.log
+firebase-debug.log
+firestore-debug.log

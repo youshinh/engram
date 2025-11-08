@@ -1,7 +1,18 @@
-import '@testing-library/jest-dom';
 import { vi } from 'vitest';
-import { JSDOM } from 'jsdom'; // JSDOMをインポート
-import { indexedDB, IDBKeyRange } from 'fake-indexeddb'; // fake-indexeddbをインポート
+import React from 'react';
+import '@testing-library/jest-dom';
+import { JSDOM } from 'jsdom';
+import { indexedDB, IDBKeyRange } from 'fake-indexeddb';
+
+// Mock React.Suspense to render children immediately in tests
+// This helps with testing components that are loaded with React.lazy
+vi.mock('react', async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    Suspense: ({ children }) => children,
+  };
+});
 
 // JSDOM環境でindexedDBとIDBKeyRangeをグローバルに設定
 const dom = new JSDOM();
