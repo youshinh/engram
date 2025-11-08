@@ -55,4 +55,18 @@ To ensure code quality and prevent regressions, all future development will adhe
 
 ## Current Development Progress:
 
-- Firestore Checkpointer integration for Engrammer's asynchronous & durable execution is complete. Next, ensure LangGraph setup correctly uses the checkpointer for state persistence and handles asynchronous operations.
+- Firestore Checkpointer integration for Engrammer's asynchronous & durable execution is complete.
+- **E2E Test Status:** All E2E tests are currently failing. Notes registration and other core functionalities are not operating as expected.
+- **Next Steps:** Investigate and resolve the E2E test failures and underlying functional issues.
+
+---
+
+## Test Execution Guidelines:
+
+To prevent interruptions during test execution, especially for E2E tests, please adhere to the following:
+
+- **Background Processes:** When running development servers or other long-running processes required for tests, ensure they are started in a truly detached background process. For PowerShell, use `Start-Job -ScriptBlock { <command> }`.
+- **Monitoring:** After starting a background process, confirm its status (e.g., `Get-Job` in PowerShell) before proceeding with tests.
+- **Cancellation:** If a test run is interrupted or cancelled, always verify the state of any background processes and terminate them if necessary (e.g., `Stop-Job -Id <JobId>` and `Remove-Job -Id <JobId>`) before attempting a new test run or starting new background processes.
+- **Error Logs:** In case of test failures, prioritize reviewing detailed error logs and traces (e.g., Playwright's trace viewer) to understand the root cause.
+- **Environment Setup:** Ensure all necessary environment variables and configurations are correctly set up before initiating test runs.
