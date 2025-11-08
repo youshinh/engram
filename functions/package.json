@@ -27,6 +27,7 @@
     "vitest": "^4.0.8"
   },
   "dependencies": {
+    "@cassina/langgraphjs-checkpoint-firestore": "^1.0.0",
     "@google/generative-ai": "^0.24.1",
     "@langchain/core": "^1.0.3",
     "@langchain/langgraph": "^1.0.1",
