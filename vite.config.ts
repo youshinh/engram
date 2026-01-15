@@ -15,6 +15,7 @@ export default defineConfig({
       '**/.{idea,git,cache,output,temp}/**',
       '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
       '**/tests/**', // Exclude the Playwright E2E tests
+      '**/functions/lib/**', // Exclude compiled Firebase Functions
     ],
   },
 });

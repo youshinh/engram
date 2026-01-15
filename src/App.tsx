@@ -128,7 +128,55 @@ function App() {
   };
 
   const handleAddNote = useCallback(async (payload: { text: string; attachment: File | null }) => {
-    // ... (omitted for brevity)
+    try {
+      const { text, attachment } = payload;
+      let content: string | Blob = text;
+      let type: 'text' | 'image' | 'audio' | 'url' = 'text';
+
+      if (attachment) {
+        if (attachment.type.startsWith('image/')) {
+           type = 'image';
+           content = attachment; // Blob
+        } else if (attachment.type.startsWith('audio/')) {
+           type = 'audio';
+           content = attachment;
+        } else {
+           // Default to treating as file attachment linked to text?
+           // For v1, let's just append info to text if it's not supported media
+           content = text + `\n[Attachment: ${attachment.name}]`;
+        }
+      } else if (text.startsWith('http')) {
+          type = 'url';
+      }
+
+      const newNote: Note = {
+        id: uuidv4(),
+        type,
+        content, // Dexie can store Blobs
+        createdAt: new Date(),
+        embeddingStatus: 'pending',
+        insightStatus: 'pending',
+        status: 'active',
+        isPinned: false,
+        tags: []
+      };
+
+      await db.notes.add(newNote);
+
+      // Trigger background processing (embedding, insight)
+      // In a real app, this might be reactive or handled by a service worker
+      // Here we just let the effects pick it up via db subscriptions if implemented,
+      // or trigger explicit check.
+      // Since workers are polling or reacting to DB, they should pick it up.
+
+      // Check for insights immediately for demo purpose
+      // const contextNotes = await db.notes.toArray();
+      // const suggestions = await getInsightSuggestions(newNote, contextNotes);
+      // ... handle suggestions
+
+    } catch (error) {
+      console.error('App: Failed to add note', error);
+    }
   }, []);
 
   // ==================================================================
