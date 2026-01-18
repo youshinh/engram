@@ -2,6 +2,8 @@
 
 [![English](https://img.shields.io/badge/lang-English-blue.svg)](README.md) [![Japanese](https://img.shields.io/badge/lang-Japanese-red.svg)](README_JP.md)
 
+[日本語のドキュメントはこちら (Japanese)](README_JP.md)
+
 > **"Noise is where the universe resides."**
 
 **en:gram** is not just a note-taking app; it is a **"Second Brain" designed for serendipity**. While biological brains evolve to filter out "noise" for efficiency, en:gram is built to capture that very noise—the raw, unfiltered chaos of your daily thoughts—and transform it into a symphony of insights using a hybrid AI architecture.
