@@ -1,0 +1,620 @@
+/* =============================================== */
+/* Global Reset & Font                           */
+/* =============================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background-color: var(--background-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* =============================================== */
+/* Theme Variables & Design System               */
+/* =============================================== */
+:root {
+  /* Color Palette */
+  --accent-primary: #007aff;
+  --accent-secondary: #5856d6;
+  --accent-tertiary: #ff9500;
+  --error-primary: #ff3b30;
+
+  /* Text Colors */
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #86868b;
+  --text-on-accent: #ffffff;
+
+  /* Backgrounds */
+  --background-primary: #f5f5f7;
+  --background-secondary: #ffffff;
+  --background-tertiary: #e5e5ea;
+
+  /* Glassmorphism */
+  --glass-background: rgba(242, 242, 247, 0.6);
+  --glass-blur: blur(20px);
+  --glass-border: rgba(110, 110, 115, 0.2);
+
+  /* UI Elements */
+  --button-hover-background: rgba(0, 0, 0, 0.05);
+  --button-active-background: rgba(0, 0, 0, 0.1);
+}
+
+.dark {
+  /* Color Palette */
+  --accent-primary: #0a84ff;
+  --accent-secondary: #5e5ce6;
+  --accent-tertiary: #ff9f0a;
+  --error-primary: #ff453a;
+
+  /* Text Colors */
+  --text-primary: #f5f5f7;
+  --text-secondary: #8d8d93;
+  --text-tertiary: #636366;
+  --text-on-accent: #ffffff;
+
+  /* Backgrounds */
+  --background-primary: #4b4b4b;
+  --background-secondary: #32323d;
+  --background-tertiary: #2c2c2e;
+
+  /* Glassmorphism */
+  --glass-background: rgba(28, 28, 30, 0.5);
+  --glass-blur: blur(20px);
+  --glass-border: rgba(84, 84, 88, 0.65);
+
+  /* UI Elements */
+  --button-hover-background: rgba(255, 255, 255, 0.1);
+  --button-active-background: rgba(255, 255, 255, 0.2);
+
+  /* UI Elements */
+  --button-hover-background: rgba(255, 255, 255, 0.1);
+  --button-active-background: rgba(255, 255, 255, 0.2);
+}
+
+/* =============================================== */
+/* Global App Layout & Background                */
+/* =============================================== */
+.app-container {
+  min-height: 100vh;
+  background-color: var(--background-primary);
+  /* Liquid/aurora effect */
+  background-image: radial-gradient(at 20% 20%, hsla(212, 90%, 70%, 0.15) 0px, transparent 50%),
+                    radial-gradient(at 80% 20%, hsla(28, 90%, 70%, 0.15) 0px, transparent 50%),
+                    radial-gradient(at 20% 80%, hsla(340, 90%, 70%, 0.15) 0px, transparent 50%),
+                    radial-gradient(at 80% 80%, hsla(190, 90%, 70%, 0.15) 0px, transparent 50%);
+}
+
+/* =============================================== */
+/* Core Components                               */
+/* =============================================== */
+
+/* Glass Card Style */
+.glass-card {
+  background: var(--glass-background);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+  transition: background 0.3s, border 0.3s;
+  padding: 16px; /* Added padding */
+  /* margin-top: 16px; */
+  margin-bottom: 8px;
+}
+
+/* Note Card Specific Styles */
+.note-card {
+  position: relative;
+}
+
+.note-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Align items to the start to prevent pin from pushing down */
+  margin-bottom: 8px;
+}
+
+.note-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between note type and action buttons */
+}
+
+.note-type {
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.note-actions-secondary {
+  display: flex;
+  gap: 4px;
+}
+
+.note-actions-main-pin {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+/* Generic Button Style */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--accent-primary);
+  background-color: transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.button:hover {
+  background-color: var(--button-hover-background);
+}
+
+.button:active {
+  background-color: var(--button-active-background);
+  transform: scale(0.98);
+}
+
+.button.primary {
+  background-color: var(--accent-primary);
+  color: var(--text-on-accent);
+}
+
+.button.primary:hover {
+  opacity: 0.9;
+}
+
+.button.primary:active {
+  opacity: 0.8;
+}
+
+/* Icon Button Style */
+.icon-button {
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.icon-button:hover {
+  background-color: var(--button-hover-background);
+  color: var(--text-primary);
+}
+
+.icon-button:active {
+  background-color: var(--button-active-background);
+  transform: scale(0.95);
+}
+
+.icon-button .material-symbols-outlined {
+  font-size: 24px;
+  color: inherit; /* Inherit color from parent */
+}
+
+.icon-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+/* =============================================== */
+/* App Header                                    */
+/* =============================================== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid var(--glass-border);
+  background: var(--glass-background);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.app-header .app-title {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* =============================================== */
+/* Side Navigation                               */
+/* =============================================== */
+.side-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.side-nav-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.side-nav {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 280px;
+  height: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  background: var(--glass-background);
+  border-right: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.side-nav.open {
+  left: 0;
+}
+
+.side-nav .close-button {
+  align-self: flex-end;
+  margin-bottom: 20px;
+}
+
+.side-nav ul {
+  list-style: none;
+}
+
+.side-nav li {
+  margin-bottom: 10px;
+}
+
+.side-nav .nav-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  background-color: transparent;
+  color: var(--text-primary);
+  font-size: 1.1em;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.side-nav .nav-item:hover {
+  background-color: var(--button-hover-background);
+}
+
+.side-nav .nav-item:active {
+  background-color: var(--button-active-background);
+  transform: scale(0.98);
+}
+
+.side-nav .nav-item.active {
+  background-color: var(--accent-primary);
+  color: var(--text-on-accent);
+}
+
+.side-nav .nav-item.active .material-symbols-outlined {
+  color: var(--text-on-accent);
+}
+
+.side-nav .nav-item span.material-symbols-outlined {
+  margin-right: 16px;
+  font-size: 1.4em;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+.side-nav .nav-item:hover span.material-symbols-outlined {
+  color: var(--text-primary);
+}
+
+/* =============================================== */
+/* Main Content & Page Layout                    */
+/* =============================================== */
+.main-content {
+  padding: 24px;
+}
+
+.main-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.note-input-card,
+.engrammer-section {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =============================================== */
+/* Note Input & Text Areas                       */
+/* =============================================== */
+.note-textarea,
+.engrammer-textarea,
+.ace-textarea {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  resize: none; /* Disable manual resize for better control */
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 1.1em;
+  padding: 12px;
+  margin-bottom: 8px;
+  min-height: 100px;
+}
+
+.note-textarea:focus,
+.engrammer-textarea:focus {
+  outline: none;
+}
+
+.note-input-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.icon-button.submit-icon {
+  background-color: var(--accent-primary);
+  color: var(--text-on-accent);
+}
+
+.icon-button.submit-icon:hover {
+  background-color: var(--accent-primary);
+  opacity: 0.9;
+}
+
+.icon-button.submit-icon:disabled {
+  background-color: var(--background-tertiary);
+  opacity: 0.5;
+}
+
+/* Attachment Preview */
+.attachment-preview {
+  position: relative;
+  margin: 0 8px 8px 8px;
+  padding: 8px;
+  background-color: var(--background-tertiary);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.attachment-preview img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.attachment-preview .file-info {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+}
+
+.remove-attachment {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 28px;
+  height: 28px;
+  background-color: var(--background-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
+}
+
+.remove-attachment:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+/* =============================================== */
+/* Connections Page & View Toggle                */
+/* =============================================== */
+.view-mode-toggle {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 10px;
+}
+
+.view-mode-toggle h2 {
+  margin: 0;
+}
+
+.view-mode-toggle .button {
+  color: var(--text-secondary);
+  border-color: var(--background-tertiary);
+}
+
+.view-mode-toggle .button:hover {
+  color: var(--text-primary);
+  background-color: var(--button-hover-background);
+}
+
+.view-mode-toggle .button.active {
+  color: var(--text-on-accent);
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+/* =============================================== */
+/* React Flow Customization                      */
+/* =============================================== */
+.react-flow__node-default {
+  border-radius: 16px !important;
+  background: var(--glass-background) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  font-size: 14px;
+  padding: 12px 18px !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1) !important;
+}
+
+.react-flow__node-default .react-flow__handle {
+  background: var(--accent-primary) !important;
+  border: none !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.react-flow__minimap {
+  border-radius: 12px;
+  background-color: var(--background-secondary);
+  border: 1px solid var(--glass-border);
+}
+
+.react-flow__controls-button {
+  background-color: var(--background-secondary);
+  border-bottom: 1px solid var(--glass-border);
+  color: var(--text-primary);
+}
+
+.dark .react-flow__controls-button {
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+}
+
+.react-flow__controls-button:hover {
+  background-color: var(--background-tertiary);
+}
+
+.react-flow__controls-button svg {
+  fill: currentColor;
+}
+
+/* =============================================== */
+/* Modal Styles                                  */
+/* =============================================== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  padding: 24px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-content h3 {
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.modal-content pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background-color: var(--background-tertiary);
+  padding: 16px;
+  border-radius: 12px;
+  color: var(--text-secondary);
+}
+
+/* =============================================== */
+/* Relation Card Specific Styles                 */
+/* =============================================== */
+.relation-card-content p.relation-section {
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.relation-card-content p.relation-section:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.relation-actions,
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* =============================================== */
+/* Miscellaneous                                 */
+/* =============================================== */
+.clickable {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.clickable:hover {
+  background-color: var(--button-hover-background);
+}
+
+.ace-response-area.error p {
+  color: var(--error-primary);
+  display: flex;
+  align-items: center;
+}
+
+
+
