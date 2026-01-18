@@ -1,2 +1,9 @@
 # Ignore environment variables file
+# Ignore environment variables file
 .env
+
+# Generated files
+lib/
+node_modules/
+firebase-debug.log
+firebaserc
